@@ -23,15 +23,15 @@ public:
 
 struct AirlineHash
 {
-    int operator() (const Airline& al) const {
+    int operator() (const Airline *al) const {
         int hashValue = 0;
-        for (char ch : al.getCode())
+        for (char ch : al->getCode())
             hashValue += hashValue * 37 + ch;
         return hashValue;
     }
 
-    bool operator() (const Airline& al1, const Airline& al2) const {
-        return al1.getCode() == al2.getCode();
+    bool operator() (const Airline *al1, const Airline *al2) const {
+        return al1->getCode() == al2->getCode();
     }
 };
 

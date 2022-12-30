@@ -12,8 +12,8 @@
 #include "Airline.h"
 #include "Airport.h"
 
-typedef std::unordered_set<Airline, AirlineHash, AirlineHash> airlinesHT;
-typedef std::unordered_set<Airport, AirportHash, AirportHash> airportsHT;
+typedef std::unordered_set<Airline*, AirlineHash, AirlineHash> airlinesHT;
+typedef std::unordered_set<Airport*, AirportHash, AirportHash> airportsHT;
 
 class DataManager {
     airlinesHT airlines;

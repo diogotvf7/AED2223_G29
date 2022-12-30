@@ -84,6 +84,13 @@ build CMakeFiles/AED2223_G29.dir/src/DataManager.cpp.o: CXX_COMPILER__AED2223_G2
   OBJECT_DIR = CMakeFiles/AED2223_G29.dir
   OBJECT_FILE_DIR = CMakeFiles/AED2223_G29.dir/src
 
+build CMakeFiles/AED2223_G29.dir/src/Coordinate.cpp.o: CXX_COMPILER__AED2223_G29_Debug /home/diogotvf7/Documents/aed/trabalho2/src/Coordinate.cpp || cmake_object_order_depends_target_AED2223_G29
+  DEP_FILE = CMakeFiles/AED2223_G29.dir/src/Coordinate.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/diogotvf7/Documents/aed/trabalho2/headers
+  OBJECT_DIR = CMakeFiles/AED2223_G29.dir
+  OBJECT_FILE_DIR = CMakeFiles/AED2223_G29.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target AED2223_G29
@@ -92,7 +99,7 @@ build CMakeFiles/AED2223_G29.dir/src/DataManager.cpp.o: CXX_COMPILER__AED2223_G2
 #############################################
 # Link the executable AED2223_G29
 
-build AED2223_G29: CXX_EXECUTABLE_LINKER__AED2223_G29_Debug CMakeFiles/AED2223_G29.dir/main.cpp.o CMakeFiles/AED2223_G29.dir/src/Airline.cpp.o CMakeFiles/AED2223_G29.dir/src/Airport.cpp.o CMakeFiles/AED2223_G29.dir/src/Flight.cpp.o CMakeFiles/AED2223_G29.dir/src/DataManager.cpp.o
+build AED2223_G29: CXX_EXECUTABLE_LINKER__AED2223_G29_Debug CMakeFiles/AED2223_G29.dir/main.cpp.o CMakeFiles/AED2223_G29.dir/src/Airline.cpp.o CMakeFiles/AED2223_G29.dir/src/Airport.cpp.o CMakeFiles/AED2223_G29.dir/src/Flight.cpp.o CMakeFiles/AED2223_G29.dir/src/DataManager.cpp.o CMakeFiles/AED2223_G29.dir/src/Coordinate.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/AED2223_G29.dir
   POST_BUILD = :

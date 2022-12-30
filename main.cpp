@@ -1,14 +1,11 @@
 #include <iostream>
 
 #include "DataManager.h"
+#include "Test.hpp"
 
 using namespace std;
 
 int main() {
-
-    DataManager dm;
-    cout << dm.readAirlines() << '\n';
-    cout << dm.readAirports() << '\n';
-
+    Test t; t.runTests();
     return 0;
 }

@@ -31,7 +31,7 @@ int DataManager::readAirlines() {
         getline(tmp, callsign, ',');
         getline(tmp, country);
 
-        airlines.insert(Airline(code, name, callsign, country));
+        airlines.insert(new Airline(code, name, callsign, country));
     }
     return (int) airlines.size();
 }
@@ -54,7 +54,7 @@ int DataManager::readAirports() {
         getline(tmp, latitude, ',');
         getline(tmp, longitude, ',');
 
-        airports.insert(Airport(code, name, city, country, stod(latitude), stod(longitude)));
+        airports.insert(new Airport(code, name, city, country, Coordinate(stod(latitude), stod(longitude))));
     }
     return (int) airports.size();
 }
