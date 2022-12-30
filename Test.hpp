@@ -16,9 +16,10 @@ class Test {
     }
 
     template<class T>
-    bool aproximates(T t1, T t2, double gap) {
+    bool approximates(T t1, T t2, double gap) {
         return abs(t1 - t2) < gap;
     }
+
 public:
     Test() {};
 
@@ -42,12 +43,12 @@ public:
         Coordinate c1(75, 132);
         Coordinate c2(23.17593, 179.261115);
         cout << "  Distance calculation test 1:\n";
-        cout << "   :  " << (aproximates(c1.distanceTo(c2), 6361.01, 3) ? "Success" : "Failure") << '\n';
+        cout << "   :  " << (approximates(c1.distanceTo(c2), 6361.01, 3) ? "Success" : "Failure") << '\n';
 
         Coordinate c3(-6.024290, 144.971000);
         Coordinate c4(4.398475,18.518786);
         cout << "  Distance calculation test 2:\n";
-        cout << "   :  " << (aproximates(c3.distanceTo(c4), 14084.9, 3) ? "Success" : "Failure") << '\n';
+        cout << "   :  " << (approximates(c3.distanceTo(c4), 14084.9, 3) ? "Success" : "Failure") << '\n';
 
         cout << '\n';
 

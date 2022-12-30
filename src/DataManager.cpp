@@ -7,11 +7,11 @@
 using namespace std;
 
 
-airlinesHT DataManager::getAirlines() const {
+airlinesUM DataManager::getAirlines() const {
     return airlines;
 }
 
-airportsHT DataManager::getAirports() const {
+airportsUM DataManager::getAirports() const {
     return airports;
 }
 
@@ -31,7 +31,7 @@ int DataManager::readAirlines() {
         getline(tmp, callsign, ',');
         getline(tmp, country);
 
-        airlines.insert(new Airline(code, name, callsign, country));
+        airlines[code] = new Airline(code, name, callsign, country);
     }
     return (int) airlines.size();
 }
@@ -54,31 +54,7 @@ int DataManager::readAirports() {
         getline(tmp, latitude, ',');
         getline(tmp, longitude, ',');
 
-        airports.insert(new Airport(code, name, city, country, Coordinate(stod(latitude), stod(longitude))));
+        airports[code] = new Airport(code, name, city, country, Coordinate(stod(latitude), stod(longitude)));
     }
     return (int) airports.size();
 }
-
-
-
-
-/*
-    ifstream in("../data/input/classes.csv");
-    string line; getline(in, line, '\r'); // Ignore Header
-
-    while (getline(in, line, '\r')) {
-
-    string classCode, ucCode, weekday, start, duration, type;
-    stringstream input(line);
-
-    getline(input, classCode, ',');
-    getline(input, ucCode, ',');
-    getline(input, weekday, ',');
-    getline(input, start, ',');
-    getline(input, duration, ',');
-    getline(input, type);
-
-    auto itr = find_if(classes.begin(), classes.end(),[ucCode, classCode](Class *c){return c->getName() == classCode &&
-                                                                                           c->getUc()->getName() == ucCode;});
-    (*itr)->addSlot(new Slot(weekday, start, duration, type));
-}*/

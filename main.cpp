@@ -7,5 +7,8 @@ using namespace std;
 
 int main() {
     Test t; t.runTests();
+    /*DataManager dm;
+    dm.readAirports();
+    dm.readAirlines();*/
     return 0;
 }

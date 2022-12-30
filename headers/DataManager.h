@@ -8,20 +8,21 @@
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
+#include <unordered_map>
 
 #include "Airline.h"
 #include "Airport.h"
 
-typedef std::unordered_set<Airline*, AirlineHash, AirlineHash> airlinesHT;
-typedef std::unordered_set<Airport*, AirportHash, AirportHash> airportsHT;
+typedef std::unordered_map<std::string, Airline*> airlinesUM;
+typedef std::unordered_map<std::string, Airport*> airportsUM;
 
 class DataManager {
-    airlinesHT airlines;
-    airportsHT airports;
+    airlinesUM airlines;
+    airportsUM airports;
 
 public:
-    airlinesHT getAirlines() const;
-    airportsHT getAirports() const;
+    airlinesUM getAirlines() const;
+    airportsUM getAirports() const;
     int readAirlines();
     int readAirports();
 };

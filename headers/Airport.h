@@ -24,18 +24,4 @@ public:
     std::string getCountry() const;
     Coordinate getCoordinate() const;
 };
-
-struct AirportHash
-{
-    int operator() (const Airport *a) const {
-        int hashValue = 0;
-        for (char ch : a->getCode())
-            hashValue += hashValue * 37 + ch;
-        return hashValue;
-    }
-
-    bool operator() (const Airport *a1, const Airport *a2) const {
-        return a1->getCode() == a2->getCode();
-    }
-};
 #endif //AED2223_G29_AIRPORT_H
