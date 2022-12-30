@@ -1,6 +1,14 @@
 #include <iostream>
 
+#include "DataManager.h"
+
+using namespace std;
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+
+    DataManager dm;
+    cout << dm.readAirlines() << '\n';
+    cout << dm.readAirports() << '\n';
+
     return 0;
 }

@@ -12,17 +12,30 @@ class Airport {
     std::string name;
     std::string city;
     std::string country;
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
 
 public:
-    Airport(std::string code, std::string name, std::string city, std::string country, float latitude, float longitude);
-    std::string getCode();
-    std::string getName();
-    std::string getCity();
-    std::string getCountry();
-    float getLatitude();
-    float getLongitude();
+    Airport(std::string code, std::string name, std::string city, std::string country, double latitude, double longitude);
+    std::string getCode() const;
+    std::string getName() const;
+    std::string getCity() const;
+    std::string getCountry() const;
+    double getLatitude() const;
+    double getLongitude() const;
 };
 
+struct AirportHash
+{
+    int operator() (const Airport& a) const {
+        int hashValue = 0;
+        for (char ch : a.getCode())
+            hashValue += hashValue * 37 + ch;
+        return hashValue;
+    }
+
+    bool operator() (const Airport& a1, const Airport& a2) const {
+        return a1.getCode() == a2.getCode();
+    }
+};
 #endif //AED2223_G29_AIRPORT_H

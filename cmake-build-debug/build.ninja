@@ -52,24 +52,35 @@ build cmake_object_order_depends_target_AED2223_G29: phony || CMakeFiles/AED2223
 build CMakeFiles/AED2223_G29.dir/main.cpp.o: CXX_COMPILER__AED2223_G29_Debug /home/diogotvf7/Documents/aed/trabalho2/main.cpp || cmake_object_order_depends_target_AED2223_G29
   DEP_FILE = CMakeFiles/AED2223_G29.dir/main.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/diogotvf7/Documents/aed/trabalho2/headers
   OBJECT_DIR = CMakeFiles/AED2223_G29.dir
   OBJECT_FILE_DIR = CMakeFiles/AED2223_G29.dir
 
 build CMakeFiles/AED2223_G29.dir/src/Airline.cpp.o: CXX_COMPILER__AED2223_G29_Debug /home/diogotvf7/Documents/aed/trabalho2/src/Airline.cpp || cmake_object_order_depends_target_AED2223_G29
   DEP_FILE = CMakeFiles/AED2223_G29.dir/src/Airline.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/diogotvf7/Documents/aed/trabalho2/headers
   OBJECT_DIR = CMakeFiles/AED2223_G29.dir
   OBJECT_FILE_DIR = CMakeFiles/AED2223_G29.dir/src
 
 build CMakeFiles/AED2223_G29.dir/src/Airport.cpp.o: CXX_COMPILER__AED2223_G29_Debug /home/diogotvf7/Documents/aed/trabalho2/src/Airport.cpp || cmake_object_order_depends_target_AED2223_G29
   DEP_FILE = CMakeFiles/AED2223_G29.dir/src/Airport.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/diogotvf7/Documents/aed/trabalho2/headers
   OBJECT_DIR = CMakeFiles/AED2223_G29.dir
   OBJECT_FILE_DIR = CMakeFiles/AED2223_G29.dir/src
 
 build CMakeFiles/AED2223_G29.dir/src/Flight.cpp.o: CXX_COMPILER__AED2223_G29_Debug /home/diogotvf7/Documents/aed/trabalho2/src/Flight.cpp || cmake_object_order_depends_target_AED2223_G29
   DEP_FILE = CMakeFiles/AED2223_G29.dir/src/Flight.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/diogotvf7/Documents/aed/trabalho2/headers
+  OBJECT_DIR = CMakeFiles/AED2223_G29.dir
+  OBJECT_FILE_DIR = CMakeFiles/AED2223_G29.dir/src
+
+build CMakeFiles/AED2223_G29.dir/src/DataManager.cpp.o: CXX_COMPILER__AED2223_G29_Debug /home/diogotvf7/Documents/aed/trabalho2/src/DataManager.cpp || cmake_object_order_depends_target_AED2223_G29
+  DEP_FILE = CMakeFiles/AED2223_G29.dir/src/DataManager.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/diogotvf7/Documents/aed/trabalho2/headers
   OBJECT_DIR = CMakeFiles/AED2223_G29.dir
   OBJECT_FILE_DIR = CMakeFiles/AED2223_G29.dir/src
 
@@ -81,7 +92,7 @@ build CMakeFiles/AED2223_G29.dir/src/Flight.cpp.o: CXX_COMPILER__AED2223_G29_Deb
 #############################################
 # Link the executable AED2223_G29
 
-build AED2223_G29: CXX_EXECUTABLE_LINKER__AED2223_G29_Debug CMakeFiles/AED2223_G29.dir/main.cpp.o CMakeFiles/AED2223_G29.dir/src/Airline.cpp.o CMakeFiles/AED2223_G29.dir/src/Airport.cpp.o CMakeFiles/AED2223_G29.dir/src/Flight.cpp.o
+build AED2223_G29: CXX_EXECUTABLE_LINKER__AED2223_G29_Debug CMakeFiles/AED2223_G29.dir/main.cpp.o CMakeFiles/AED2223_G29.dir/src/Airline.cpp.o CMakeFiles/AED2223_G29.dir/src/Airport.cpp.o CMakeFiles/AED2223_G29.dir/src/Flight.cpp.o CMakeFiles/AED2223_G29.dir/src/DataManager.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/AED2223_G29.dir
   POST_BUILD = :
