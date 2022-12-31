@@ -2,33 +2,32 @@
 // Created by diogotvf7 on 29-12-2022.
 //
 
-#ifndef AED2223_G29_DATAMANAGER_H
-#define AED2223_G29_DATAMANAGER_H
+#ifndef AED2223_G29_FLIGHTGRAPH_H
+#define AED2223_G29_FLIGHTGRAPH_H
 
 #include <fstream>
 #include <sstream>
-#include <unordered_set>
+#include <string>
+
 #include <unordered_map>
+#include <list>
 
 #include "Airline.h"
 #include "Airport.h"
-#include "FlightGraph.h"
+#include "Flight.h"
 
 typedef std::unordered_map<std::string, Airline*> airlinesUM;
 typedef std::unordered_map<std::string, Airport*> airportsUM;
 
-class DataManager {
+class FlightGraph {
+
     airlinesUM airlines;
     airportsUM airports;
 
 public:
-    airlinesUM getAirlines() const;
-    airportsUM getAirports() const;
-    int readAirlines();
-    int readAirports();
+    FlightGraph(airportsUM airports, airlinesUM airlines);
 
-    FlightGraph createFlightGraph();
+    void addFlight(Airport *source, Airport *target, Airline *airline);
 };
 
-
-#endif //AED2223_G29_DATAMANAGER_H
+#endif //AED2223_G29_FLIGHTGRAPH_H

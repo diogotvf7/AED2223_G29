@@ -33,4 +33,12 @@ Coordinate Airport::getCoordinate() const {
     return coordinate;
 }
 
+std::list<Flight> Airport::getFlights() const {
+    return flights;
+}
+
+void Airport::addFlight(Flight f) {
+    flights.push_back(f);
+}
+
 

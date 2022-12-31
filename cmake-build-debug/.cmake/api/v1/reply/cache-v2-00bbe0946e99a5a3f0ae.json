@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug"
+			"value" : "/home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug"
 		},
 		{
 			"name" : "AED2223_G29_IS_TOP_LEVEL",
@@ -35,7 +35,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/diogotvf7/Documents/aed/trabalho2"
+			"value" : "/home/diogotvf7/Documents/aed/AED2223_G29"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -91,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug"
+			"value" : "/home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -579,7 +579,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -639,7 +639,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/diogotvf7/Documents/aed/trabalho2"
+			"value" : "/home/diogotvf7/Documents/aed/AED2223_G29"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",

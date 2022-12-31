@@ -1,4 +1,4 @@
-/snap/clion/219/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/219/bin/ninja/linux/ninja -G Ninja -S /home/diogotvf7/Documents/aed/trabalho2 -B /home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug
+/snap/clion/219/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/219/bin/ninja/linux/ninja -G Ninja -S /home/diogotvf7/Documents/aed/AED2223_G29 -B /home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug
+-- Build files have been written to: /home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug

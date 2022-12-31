@@ -7,8 +7,10 @@ using namespace std;
 
 int main() {
     Test t; t.runTests();
-    /*DataManager dm;
+    DataManager dm;
     dm.readAirports();
-    dm.readAirlines();*/
+    dm.readAirlines();
+
+    FlightGraph g1 = dm.createFlightGraph();
     return 0;
 }

@@ -1,3 +1,3 @@
-/home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug/CMakeFiles/AED2223_G29.dir
-/home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug/CMakeFiles/AED2223_G29.dir
+/home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -58,3 +58,25 @@ int DataManager::readAirports() {
     }
     return (int) airports.size();
 }
+
+FlightGraph DataManager::createFlightGraph() {
+
+    FlightGraph fg = FlightGraph(airports, airlines);
+
+    ifstream csv("../dataset/flights.csv");
+    string line;
+    getline(csv, line, '\n'); // Ignore Header
+
+    while (getline(csv, line, '\n')) {
+
+        string source, target, airline;
+        stringstream tmp(line);
+
+        getline(tmp, source, ',');
+        getline(tmp, target, ',');
+        getline(tmp, airline);
+
+        fg.addFlight(airports[source], airports[target], airlines[airline]);
+    }
+    return fg;
+}

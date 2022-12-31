@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "AED2223_G29::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-AED2223_G29-Debug-91f1e87ff2845164def8.json",
+					"jsonFile" : "target-AED2223_G29-Debug-f3126309f7fabae3e50e.json",
 					"name" : "AED2223_G29",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/diogotvf7/Documents/aed/trabalho2/cmake-build-debug",
-		"source" : "/home/diogotvf7/Documents/aed/trabalho2"
+		"build" : "/home/diogotvf7/Documents/aed/AED2223_G29/cmake-build-debug",
+		"source" : "/home/diogotvf7/Documents/aed/AED2223_G29"
 	},
 	"version" : 
 	{
