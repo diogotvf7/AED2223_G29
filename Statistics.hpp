@@ -27,7 +27,7 @@ public:
         cout << setw(58) << right << "Airports by country:\n";
         cout << setw(58) << right << "____________________\n";
 
-        airportsUM airports = dm.getAirports();
+        UMairports airports = dm.getAirports();
         map<string,int> freqTable;
         for (auto &[code, airport] : airports)
             freqTable[airport->getCountry()]++;
@@ -42,7 +42,7 @@ public:
         cout << setw(58) << right << "Airlines by country:\n";
         cout << setw(58) << right << "____________________\n";
 
-        airlinesUM airlines = dm.getAirlines();
+        UMairlines airlines = dm.getAirlines();
         map<string,int> freqTable;
         for (auto &[code, airline] : airlines)
             freqTable[airline->getCountry()]++;

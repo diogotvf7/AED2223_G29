@@ -17,9 +17,9 @@ class Flight {
 
 public:
     Flight(Airport *target, Airline *airline, double distance);
-    Airport *getTarget() const;
-    Airline *getAirline() const;
-    double getDistance() const;
+    [[nodiscard]] Airport *getTarget() const;
+    [[nodiscard]] Airline *getAirline() const;
+    [[nodiscard]] double getDistance() const;
 };
 
 #endif //AED2223_G29_FLIGHT_H

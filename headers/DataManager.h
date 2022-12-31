@@ -14,16 +14,16 @@
 #include "Airport.h"
 #include "FlightGraph.h"
 
-typedef std::unordered_map<std::string, Airline*> airlinesUM;
-typedef std::unordered_map<std::string, Airport*> airportsUM;
+typedef std::unordered_map<std::string, Airline*> UMairlines;
+typedef std::unordered_map<std::string, Airport*> UMairports;
 
 class DataManager {
-    airlinesUM airlines;
-    airportsUM airports;
+    UMairlines airlines;
+    UMairports airports;
 
 public:
-    airlinesUM getAirlines() const;
-    airportsUM getAirports() const;
+    UMairlines getAirlines() const;
+    UMairports getAirports() const;
     int readAirlines();
     int readAirports();
 

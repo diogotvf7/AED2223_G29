@@ -16,18 +16,36 @@
 #include "Airport.h"
 #include "Flight.h"
 
-typedef std::unordered_map<std::string, Airline*> airlinesUM;
-typedef std::unordered_map<std::string, Airport*> airportsUM;
+class Airport;
+
+typedef std::unordered_map<std::string, Airline*> UMairlines;
+typedef std::unordered_map<std::string, Airport*> UMairports;
+typedef std::list<std::list<Airport*>> LLairports;
+typedef std::list<Airport*> Lairports;
 
 class FlightGraph {
 
-    airlinesUM airlines;
-    airportsUM airports;
+    UMairlines airlines;
+    UMairports airports;
 
 public:
-    FlightGraph(airportsUM airports, airlinesUM airlines);
+    // Constructor:
+    FlightGraph(UMairports airports, UMairlines airlines);
 
+    // Add flight to airport:
     void addFlight(Airport *source, Airport *target, Airline *airline);
+
+    // Depth-First Search:
+    void dfs(std::string airport);
+
+    // Breadth-First Search:
+    void bfs(int v);
+    void bfsDist(int a, int b);
+    int bfsMaxDist(int v);
+
+    // Search call functions:
+    LLairports connectedComponents();
+
 };
 
 #endif //AED2223_G29_FLIGHTGRAPH_H

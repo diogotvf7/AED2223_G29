@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <iomanip>
 
 #include "DataManager.h"
 #include "Coordinate.h"
@@ -38,7 +39,7 @@ public:
 
     void CoordinatesTests() {
         cout << "CoordinatesTests:\n"
-                "_____________\n";
+                "_________________\n";
 
         Coordinate c1(75, 132);
         Coordinate c2(23.17593, 179.261115);
@@ -51,12 +52,35 @@ public:
         cout << "   :  " << (approximates(c3.distanceTo(c4), 14084.9, 3) ? "Success" : "Failure") << '\n';
 
         cout << '\n';
+    }
 
+    void FlightGraphsTests() {
+        cout << "FlightGraphsTests:\n"
+                "__________________\n";
+
+        DataManager dm;
+        dm.readAirports();
+        dm.readAirlines();
+
+        FlightGraph g1 = dm.createFlightGraph();
+
+        cout << "  Listing connected components test:\n";
+        LLairports connectedComponents = g1.connectedComponents();
+        int counter = 1;
+        for (const Lairports &cc : connectedComponents) {
+            cout << "\n_____________________________";
+            cout << "\n   : Connected component " << counter++ << '\n';
+            for (Airport *ap : cc)
+                cout << "          -" << ap->getCode() << ' ' << setw(55) << left << ap->getName() << ap->getCountry() << '\n';
+        }
+
+        cout << '\n';
     }
 
     void runTests() {
         cout << '\n';
         CSVReadTests();
         CoordinatesTests();
+        FlightGraphsTests();
     }
 };

@@ -10,6 +10,7 @@
 
 #include "Flight.h"
 #include "Coordinate.h"
+#include "FlightGraph.h"
 
 class Flight;
 
@@ -20,15 +21,23 @@ class Airport {
     std::string country;
     Coordinate coordinate;
     std::list<Flight> flights;
+    // Graph traversal variables
+    bool isVisited;
+    double distance;
 
 public:
     Airport(std::string code, std::string name, std::string city, std::string country, Coordinate coordinate);
-    std::string getCode() const;
-    std::string getName() const;
-    std::string getCity() const;
-    std::string getCountry() const;
-    Coordinate getCoordinate() const;
-    std::list<Flight> getFlights() const;
+    [[nodiscard]] std::string getCode() const;
+    [[nodiscard]] std::string getName() const;
+    [[nodiscard]] std::string getCity() const;
+    [[nodiscard]] std::string getCountry() const;
+    [[nodiscard]] Coordinate getCoordinate() const;
+    [[nodiscard]] std::list<Flight> getFlights() const;
+    [[nodiscard]] bool getState() const;
+    [[nodiscard]] double getDistance() const;
+
+    void setState(bool state);
+    void setDistance(double dist);
 
     void addFlight(Flight f);
 };

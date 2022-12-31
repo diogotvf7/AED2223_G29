@@ -7,11 +7,11 @@
 using namespace std;
 
 
-airlinesUM DataManager::getAirlines() const {
+UMairlines DataManager::getAirlines() const {
     return airlines;
 }
 
-airportsUM DataManager::getAirports() const {
+UMairports DataManager::getAirports() const {
     return airports;
 }
 
