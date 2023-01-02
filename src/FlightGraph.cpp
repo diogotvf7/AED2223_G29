@@ -1,6 +1,7 @@
 //
 // Created by diogotvf7 on 29-12-2022.
 //
+#include <vector>
 #include "FlightGraph.h"
 
 using namespace std;
@@ -24,12 +25,22 @@ void FlightGraph::addFlight(Airport *source, Airport *target, Airline *airline) 
 //
 // Depth-First Search:
 //
-void FlightGraph::dfs(string airport) {
-    airports[airport]->setState(true);
+void FlightGraph::dfs(string airport, UMbool &isVisited) {
+    isVisited[airport] = true;
     for (Flight flight : airports[airport]->getFlights()) {
         string ap = flight.getTarget()->getCode();
-        if (!airports[ap]->getState())
-            dfs(ap);
+        if (!isVisited[ap])
+            dfs(ap, isVisited);
+    }
+}
+
+void FlightGraph::dfsList(string airport, list<string> &lairports, UMbool &isVisited) {
+    isVisited[airport] = true;
+    lairports.push_back(airport);
+    for (Flight flight : airports[airport]->getFlights()) {
+        string ap = flight.getTarget()->getCode();
+        if (!isVisited[ap])
+            dfsList(ap, lairports, isVisited);
     }
 }
 
@@ -40,22 +51,16 @@ void FlightGraph::dfs(string airport) {
 //
 // Search call functions:
 //
-LLairports FlightGraph::connectedComponents() {
-    LLairports res;
-    Lairports tmp;
-
+list<string> FlightGraph::reachableAirports(string source) {
+    list<string> res;
+    UMbool isVisited;
     for (auto &[name, airport] : airports)
-        airport->setState(false);
-
-    for (auto &[name, airport] : airports) {
-        if (!airports[name]->getState()) {
-            if (!tmp.empty())
-                res.push_back(tmp);
-            tmp = {};
-            dfs(name);
-        }
-        tmp.push_back(airport);
-    }
+        isVisited[name] = false;
+    dfsList(source, res, isVisited);
     return res;
+}
+
+std::set<std::string> FlightGraph::reachableCities(std::string source) {
+    return std::set<std::string>();
 }
 

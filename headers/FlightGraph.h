@@ -7,10 +7,10 @@
 
 #include <fstream>
 #include <sstream>
-#include <string>
-
-#include <unordered_map>
 #include <list>
+#include <set>
+#include <unordered_map>
+#include <string>
 
 #include "Airline.h"
 #include "Airport.h"
@@ -20,8 +20,7 @@ class Airport;
 
 typedef std::unordered_map<std::string, Airline*> UMairlines;
 typedef std::unordered_map<std::string, Airport*> UMairports;
-typedef std::list<std::list<Airport*>> LLairports;
-typedef std::list<Airport*> Lairports;
+typedef std::unordered_map<std::string, bool> UMbool;
 
 class FlightGraph {
 
@@ -36,7 +35,8 @@ public:
     void addFlight(Airport *source, Airport *target, Airline *airline);
 
     // Depth-First Search:
-    void dfs(std::string airport);
+    void dfs(std::string airport, UMbool &isVisited);
+    void dfsList(std::string airport, std::list<std::string> &lairports, UMbool &isVisited);
 
     // Breadth-First Search:
     void bfs(int v);
@@ -44,7 +44,8 @@ public:
     int bfsMaxDist(int v);
 
     // Search call functions:
-    LLairports connectedComponents();
+    std::list<std::string> reachableAirports(std::string source);
+    std::set<std::string> reachableCities(std::string source);
 
 };
 

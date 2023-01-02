@@ -7,6 +7,10 @@
 using namespace std;
 
 
+DataManager::DataManager(std::string path) {
+    this->path = path;
+}
+
 UMairlines DataManager::getAirlines() const {
     return airlines;
 }
@@ -17,7 +21,7 @@ UMairports DataManager::getAirports() const {
 
 int DataManager::readAirlines() {
 
-    ifstream csv("../dataset/airlines.csv");
+    ifstream csv(path + "/airlines.csv");
     string line;
     getline(csv, line, '\n'); // Ignore Header
 
@@ -35,10 +39,10 @@ int DataManager::readAirlines() {
     }
     return (int) airlines.size();
 }
-
+#include <iostream>
 int DataManager::readAirports() {
 
-    ifstream csv("../dataset/airports.csv");
+    ifstream csv(path + "airports.csv");
     string line;
     getline(csv, line, '\n'); // Ignore Header
 
@@ -63,7 +67,7 @@ FlightGraph DataManager::createFlightGraph() {
 
     FlightGraph fg = FlightGraph(airports, airlines);
 
-    ifstream csv("../dataset/flights.csv");
+    ifstream csv(path + "flights.csv");
     string line;
     getline(csv, line, '\n'); // Ignore Header
 

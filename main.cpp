@@ -8,8 +8,8 @@ using namespace std;
 
 int main() {
     Test t; t.runTests();
-    // Statistics s; s.runStatistics();
-    DataManager dm;
+    // Statistics s(dm); s.runStatistics();
+    DataManager dm("../dataset/real/");
     dm.readAirports();
     dm.readAirlines();
 

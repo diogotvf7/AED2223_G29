@@ -11,8 +11,6 @@ Airport::Airport(string code, string name, string city, string country, Coordina
     this->city = city;
     this->country = country;
     this->coordinate = coordinate;
-    isVisited = false;
-    distance = INFINITY;
 }
 
 string Airport::getCode() const {
@@ -37,22 +35,6 @@ Coordinate Airport::getCoordinate() const {
 
 std::list<Flight> Airport::getFlights() const {
     return flights;
-}
-
-bool Airport::getState() const {
-    return isVisited;
-}
-
-double Airport::getDistance() const {
-    return distance;
-}
-
-void Airport::setState(bool state) {
-    isVisited = state;
-}
-
-void Airport::setDistance(double dist) {
-    distance = dist;
 }
 
 void Airport::addFlight(Flight f) {

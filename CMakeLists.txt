@@ -21,4 +21,4 @@ add_executable(AED2223_G29
                 src/FlightGraph.cpp
                 Test.hpp
                 Statistics.hpp
-        src/City.cpp headers/City.h)
+        src/City.cpp headers/City.h src/Menu.cpp headers/Menu.h)

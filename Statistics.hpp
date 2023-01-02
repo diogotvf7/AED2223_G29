@@ -16,8 +16,7 @@ class Statistics {
 
 public:
 
-    Statistics() {
-        dm = DataManager();
+    Statistics(DataManager dm) : dm(dm) {
         dm.readAirlines();
         dm.readAirports();
     }
