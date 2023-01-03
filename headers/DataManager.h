@@ -16,18 +16,23 @@
 
 typedef std::unordered_map<std::string, Airline*> UMairlines;
 typedef std::unordered_map<std::string, Airport*> UMairports;
+typedef std::unordered_set<std::string> uss;
 
 class DataManager {
     std::string path;
     UMairlines airlines;
     UMairports airports;
+    uss cities, countries;
 
+
+    void readAirlines();
+    void readAirports();
 public:
     DataManager(std::string path);
     UMairlines getAirlines() const;
     UMairports getAirports() const;
-    int readAirlines();
-    int readAirports();
+    uss getCities() const;
+    uss getCountries() const;
 
     FlightGraph createFlightGraph();
 };

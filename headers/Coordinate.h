@@ -17,7 +17,7 @@ public:
 
     double getLatitude() const;
     double getLongitude() const;
-    double distanceTo(Coordinate c) const;
+    double distanceTo(Coordinate c2) const;
 };
 
 

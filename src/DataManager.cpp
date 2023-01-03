@@ -9,17 +9,12 @@ using namespace std;
 
 DataManager::DataManager(std::string path) {
     this->path = path;
+    readAirlines();
+    readAirports();
 }
 
-UMairlines DataManager::getAirlines() const {
-    return airlines;
-}
 
-UMairports DataManager::getAirports() const {
-    return airports;
-}
-
-int DataManager::readAirlines() {
+void DataManager::readAirlines() {
 
     ifstream csv(path + "/airlines.csv");
     string line;
@@ -37,10 +32,9 @@ int DataManager::readAirlines() {
 
         airlines[code] = new Airline(code, name, callsign, country);
     }
-    return (int) airlines.size();
 }
-#include <iostream>
-int DataManager::readAirports() {
+
+void DataManager::readAirports() {
 
     ifstream csv(path + "airports.csv");
     string line;
@@ -58,9 +52,26 @@ int DataManager::readAirports() {
         getline(tmp, latitude, ',');
         getline(tmp, longitude, ',');
 
+        cities.insert(city);
+        countries.insert(country);
         airports[code] = new Airport(code, name, city, country, Coordinate(stod(latitude), stod(longitude)));
     }
-    return (int) airports.size();
+}
+
+UMairlines DataManager::getAirlines() const {
+    return airlines;
+}
+
+UMairports DataManager::getAirports() const {
+    return airports;
+}
+
+uss DataManager::getCities() const {
+    return cities;
+}
+
+uss DataManager::getCountries() const {
+    return countries;
 }
 
 FlightGraph DataManager::createFlightGraph() {

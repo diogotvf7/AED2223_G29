@@ -16,11 +16,6 @@ class Statistics {
 
 public:
 
-    Statistics(DataManager dm) : dm(dm) {
-        dm.readAirlines();
-        dm.readAirports();
-    }
-
     void airportsByCountry() {
 
         cout << setw(58) << right << "Airports by country:\n";

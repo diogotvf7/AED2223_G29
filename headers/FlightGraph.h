@@ -20,7 +20,6 @@ class Airport;
 
 typedef std::unordered_map<std::string, Airline*> UMairlines;
 typedef std::unordered_map<std::string, Airport*> UMairports;
-typedef std::unordered_map<std::string, bool> UMbool;
 
 class FlightGraph {
 
@@ -35,17 +34,19 @@ public:
     void addFlight(Airport *source, Airport *target, Airline *airline);
 
     // Depth-First Search:
-    void dfs(std::string airport, UMbool &isVisited);
-    void dfsList(std::string airport, std::list<std::string> &lairports, UMbool &isVisited);
+    void dfs(std::string airport);
+    void dfsList(std::string airport, std::list<std::string> &lairports);
 
     // Breadth-First Search:
     void bfs(int v);
+    void dijkstra(const std::string& source);
     void bfsDist(int a, int b);
     int bfsMaxDist(int v);
 
     // Search call functions:
     std::list<std::string> reachableAirports(std::string source);
     std::set<std::string> reachableCities(std::string source);
+    double minDistance(const std::string &source, const std::string &target);
 
 };
 

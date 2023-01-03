@@ -43,7 +43,7 @@ public:
 
 struct AiportCompare {
     bool operator()(const Airport *a1, const Airport *a2) {
-        return a1->getDistance() < a2->getDistance();
+        return a1->getDistance() > a2->getDistance();
     }
 };
 #endif //AED2223_G29_AIRPORT_H

@@ -22,7 +22,7 @@ public:
         s.push({t, {min, max}});
     }
 
-    T pop() {
+    void  pop() {
         T poppedItem = s.top().first;
         s.pop();
         return poppedItem;
