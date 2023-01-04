@@ -7,32 +7,38 @@
 
 #include <fstream>
 #include <sstream>
-#include <unordered_set>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "Airline.h"
 #include "Airport.h"
 #include "FlightGraph.h"
+#include "City.h"
+#include "Country.h"
 
 typedef std::unordered_map<std::string, Airline*> UMairlines;
 typedef std::unordered_map<std::string, Airport*> UMairports;
-typedef std::unordered_set<std::string> uss;
+typedef std::unordered_set<City*, CityHash, CityHash> UScities;
+typedef std::unordered_set<Country*, CountryHash, CountryHash> UScountries;
 
 class DataManager {
     std::string path;
     UMairlines airlines;
     UMairports airports;
-    uss cities, countries;
-
+    UScities cities;
+    UScountries countries;
+    FlightGraph *fg;
 
     void readAirlines();
     void readAirports();
+    void readFlights();
 public:
-    DataManager(std::string path);
+    explicit DataManager(std::string path);
     UMairlines getAirlines() const;
     UMairports getAirports() const;
-    uss getCities() const;
-    uss getCountries() const;
+    FlightGraph *getFlightsGraph() const;
+    UScountries getCountries() const;
+    UScities getCities() const;
 
     FlightGraph createFlightGraph();
 };

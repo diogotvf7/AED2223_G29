@@ -12,16 +12,19 @@
 using namespace std;
 
 class Statistics {
-    DataManager dm;
+    DataManager *dm;
 
 public:
+    Statistics(DataManager *dm) {
+        this->dm = dm;
+    }
 
     void airportsByCountry() {
 
         cout << setw(58) << right << "Airports by country:\n";
         cout << setw(58) << right << "____________________\n";
 
-        UMairports airports = dm.getAirports();
+        UMairports airports = dm->getAirports();
         map<string,int> freqTable;
         for (auto &[code, airport] : airports)
             freqTable[airport->getCountry()]++;
@@ -36,7 +39,7 @@ public:
         cout << setw(58) << right << "Airlines by country:\n";
         cout << setw(58) << right << "____________________\n";
 
-        UMairlines airlines = dm.getAirlines();
+        UMairlines airlines = dm->getAirlines();
         map<string,int> freqTable;
         for (auto &[code, airline] : airlines)
             freqTable[airline->getCountry()]++;

@@ -35,3 +35,8 @@ double Coordinate::distanceTo(Coordinate c2) const {
     return 12742 * asin(sqrt(a));
 }
 
+std::ostream &operator<<(std::ostream &os, const Coordinate &coordinate) {
+    os << '{' << coordinate.latitude << ',' << coordinate.longitude << '}';
+    return os;
+}
+

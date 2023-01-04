@@ -36,20 +36,20 @@ void FlightGraph::dfs(string airport) {
     }
 }
 
-void FlightGraph::dfsList(string airport, list<string> &lairports) {
+void FlightGraph::dfsList(string airport, vector<string> &vairports) {
     airports[airport]->setToken(true);
-    lairports.push_back(airport);
+    vairports.push_back(airport);
     for (Flight flight : airports[airport]->getFlights()) {
         string ap = flight.getTarget()->getCode();
         if (!airports[ap]->getToken())
-            dfsList(ap, lairports);
+            dfsList(ap, vairports);
     }
 }
 
 //
 // Breadth-First Search:
 //
-void FlightGraph::dijkstra(const string &source) {
+void FlightGraph::dijkstra(const string &source, bool mode) {
     for (auto &[name, airport] : airports) {
         airport->setToken(false);
         airport->setDistance(40075.017);
@@ -58,7 +58,6 @@ void FlightGraph::dijkstra(const string &source) {
     airports[source]->setDistance(0);
 
     priority_queue<Airport*, vector<Airport*>, AiportCompare> pq;
-    /*MinMaxStack<Airport*, AiportCompare> mms;*/
     pq.push(airports[source]);
 
      while (!pq.empty()) {
@@ -67,7 +66,7 @@ void FlightGraph::dijkstra(const string &source) {
         for (Flight e : u->getFlights()) {
             Airport *v = e.getTarget();
             if (v->getDistance() > u->getDistance() + e.getDistance()) {
-                v->setDistance(u->getDistance() + e.getDistance());
+                v->setDistance(u->getDistance() + (mode ? 1 : e.getDistance()));
                 pq.push(v);
             }
         }
@@ -77,8 +76,8 @@ void FlightGraph::dijkstra(const string &source) {
 //
 // Search call functions:
 //
-list<string> FlightGraph::reachableAirports(string source) {
-    list<string> res;
+std::vector<std::string> FlightGraph::reachableAirports(string source) {
+    vector<string> res;
     for (auto &[name, airport] : airports)
         airports[name]->setToken(false);
     dfsList(source, res);
@@ -89,8 +88,8 @@ std::set<std::string> FlightGraph::reachableCities(std::string source) {
     return std::set<std::string>();
 }
 
-double FlightGraph::minDistance(const std::string &source, const std::string &target) {
-    dijkstra(source);
+double FlightGraph::minDistance(std::string source, std::string target, bool mode) {
+    dijkstra(source, mode);
     return airports[target]->getDistance();
 }
 

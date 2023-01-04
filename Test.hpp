@@ -29,8 +29,8 @@ class Test {
 
         Container1 actualCopy = actual;
         Container2 expectedCopy = expected;
-        actualCopy.sort();
-        expectedCopy.sort();
+        sort(actualCopy.begin(), actualCopy.end());
+        sort(expectedCopy.begin(), expectedCopy.end());
 
         auto itr1 = actualCopy.begin();
         auto itr2 = expectedCopy.begin();
@@ -47,7 +47,9 @@ public:
     void CSVReadTests() {
         cout << "CSVReadTests:\n"
                 "_____________\n";
+
         DataManager dm("../dataset/real/");
+
         cout << "  Airlines reading test:\n";
         cout << "   :  " << (equals(dm.getAirlines().size(), 444) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
@@ -91,8 +93,8 @@ public:
         DataManager dm("../dataset/test/");
 
         FlightGraph g1 = dm.createFlightGraph();
-        list<string> actual;
-        list<string> expected;
+        vector<string> actual;
+        vector<string> expected;
 
         cout << "  Listing connected components test 1:";
         actual = g1.reachableAirports("0D");
@@ -121,9 +123,9 @@ public:
         cout << "MinDistanceBetweenAirportsTests:\n"
                 "________________________________\n";
 
-        DataManager dm("../dataset/test/");
+        DataManager dmTest("../dataset/test/");
 
-        FlightGraph g1 = dm.createFlightGraph();
+        FlightGraph g1 = dmTest.createFlightGraph();
 
         cout << "  Min distance test 1:";
         cout << "\n   : " << (approximates(g1.minDistance("0A", "0E"), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
@@ -136,6 +138,23 @@ public:
 
         cout << "  Min distance test 4:";
         cout << "\n   : " << (approximates(g1.minDistance("0A", "0E"), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+
+        cout << "  Min distance test 5:";
+        cout << "\n   : " << (equals(g1.minDistance("1A", "1D", true), 1) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+
+        cout << "  Min distance test 6:";
+        cout << "\n   : " << (equals(g1.minDistance("1A", "1A", true), 0) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+
+        cout << "  Min distance test 7:";
+        cout << "\n   : " << (equals(g1.minDistance("1A", "1A"), 0) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+
+        DataManager dmReal("../dataset/real/");
+
+        cout << "  Min distance test 1:";
+        cout << dmReal.getAirports()["CIY"]->getToken() << "    " << dmReal.getAirports()["CRL"]->getToken() << endl;
+        cout << "\n   : " << dmReal.getFlightsGraph()->minDistance("CIY", "CRL") << endl;
+        cout << "\n   : " << (approximates(g1.minDistance("CIY", "CRL"), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+
 
 
         cout << '\n';

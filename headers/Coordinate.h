@@ -5,6 +5,7 @@
 #ifndef AED2223_G29_COORDINATE_H
 #define AED2223_G29_COORDINATE_H
 
+#include <ostream>
 #include <cmath>
 
 class Coordinate {
@@ -18,6 +19,8 @@ public:
     double getLatitude() const;
     double getLongitude() const;
     double distanceTo(Coordinate c2) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Coordinate &coordinate);
 };
 
 

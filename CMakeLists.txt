@@ -25,4 +25,4 @@ add_executable(AED2223_G29
         src/Menu.cpp
         Test.hpp
         Statistics.hpp
-        MinMaxStack.hpp)
+        MinMaxStack.hpp src/Country.cpp headers/Country.h)

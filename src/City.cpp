@@ -4,6 +4,21 @@
 
 #include "City.h"
 
-std::string City::getName() const {
-    return std::string();
+using namespace std;
+
+City::City(string name) {
+    this->name = name;
 }
+
+string City::getName() const {
+    return name;
+}
+
+list<Airport*> City::getAirports() const {
+    return airports;
+}
+
+void City::addAirport(Airport *airport) {
+    airports.push_back(airport);
+}
+

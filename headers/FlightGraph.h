@@ -7,7 +7,7 @@
 
 #include <fstream>
 #include <sstream>
-#include <list>
+#include <vector>
 #include <set>
 #include <unordered_map>
 #include <string>
@@ -35,18 +35,15 @@ public:
 
     // Depth-First Search:
     void dfs(std::string airport);
-    void dfsList(std::string airport, std::list<std::string> &lairports);
+    void dfsList(std::string airport, std::vector<std::string> &vairports);
 
     // Breadth-First Search:
-    void bfs(int v);
-    void dijkstra(const std::string& source);
-    void bfsDist(int a, int b);
-    int bfsMaxDist(int v);
+    void dijkstra(const std::string &source, bool mode = false);
 
     // Search call functions:
-    std::list<std::string> reachableAirports(std::string source);
+    std::vector<std::string> reachableAirports(std::string source);
     std::set<std::string> reachableCities(std::string source);
-    double minDistance(const std::string &source, const std::string &target);
+    double minDistance(std::string source, std::string target, bool mode = false);
 
 };
 
