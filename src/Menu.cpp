@@ -123,7 +123,7 @@ bool Menu::reachableAirports(Airport *source) {
              << "|                       SELECT AN AIRPORT TO SEE FLIGHT INFORMATION                      |\n"
              << "|________________________________________________________________________________________|\n";
 
-        for (int i = page * 20 + 1; i < min(page * 20 + 20, (int) targets.size()); i++) {
+        for (int i = page * 20 + 1; i <= min(page * 20 + 20, (int) targets.size()); i++) {
             cout << right << setw(20) << to_string(i) + ".   " << left << setw(30)
                  << airports[targets[i]]->getCode() + " " + airports[targets[i]]->getName();
             cout << endl;
@@ -157,8 +157,11 @@ bool Menu::reachableAirports(Airport *source) {
 }
 
 bool Menu::flightInfo(Airport *source, Airport *target) {
-    double minDistance = dm->getFlightsGraph()->minDistance(source->getCode(), target->getCode());
+    double minDistance = dm->getFlightsGraph()->minDistance(source->getCode(), target->getCode(), false);
+    list<Airport*> minDistancePath = dm->getFlightsGraph()->path(source, target);
+    // double minNumberFlights = dm->getFlightsGraph()->countFlights(source->getCode());
     double minNumberFlights = dm->getFlightsGraph()->minDistance(source->getCode(), target->getCode(), true);
+    list<Airport*> minNumberFlightsPath = dm->getFlightsGraph()->path(source, target);
 
     bool alive = true;
 
@@ -170,10 +173,21 @@ bool Menu::flightInfo(Airport *source, Airport *target) {
              << "|________________________________________________________________________________________|\n";
         cout << right << setw(5) << source->getCode() << " : " << setw(60) << left << source->getName() << ' ' << source->getCoordinate() << ' ' << source->getCountry() << endl;
         cout << right << setw(10)  << " to " << endl;
-        cout << right << setw(5) << source->getCode() << " : " << setw(60) << left << target->getName() << ' ' << target->getCoordinate() << ' ' << target->getCountry() << endl;
+        cout << right << setw(5) << target->getCode() << " : " << setw(60) << left << target->getName() << ' ' << target->getCoordinate() << ' ' << target->getCountry() << endl;
         cout << "__________________________________________________________________________________________\n";
         cout << right << setw(20) << "Minimum distance: " << minDistance << " km;" << endl;
+        auto itr = minDistancePath.begin();
+        while (itr != minDistancePath.end()) {
+            cout << right << setw(7) << "1: " << (*itr)->getCode() << ' ' << (*itr)->getName() << endl;
+            itr++;
+        }
+        cout << "__________________________________________________________________________________________\n";
         cout << right << setw(20) << "Minimum number of flights: " << minNumberFlights << " flights;" << endl;
+        itr = minNumberFlightsPath.begin();
+        while (itr != minNumberFlightsPath.end()) {
+            cout << right << setw(7) << "1: " << (*itr)->getCode() << ' ' << (*itr)->getName() << endl;
+            itr++;
+        }
 
         cout << "__________________________________________________________________________________________\n"
              << "|                           WRITE A NUMBER TO SEE AIRPORT MENU                           |\n"

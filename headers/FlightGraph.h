@@ -34,16 +34,18 @@ public:
     void addFlight(Airport *source, Airport *target, Airline *airline);
 
     // Depth-First Search:
-    void dfs(std::string airport);
-    void dfsList(std::string airport, std::vector<std::string> &vairports);
+    void dfs(const std::string &airport);
+    void listComponent(const std::string &airport, std::vector<std::string> &vairports);
 
     // Breadth-First Search:
-    void dijkstra(const std::string &source, bool mode = false);
+    void countFlights(const std::string &airport);
+    void dijkstra(const std::string &airport);
 
     // Search call functions:
-    std::vector<std::string> reachableAirports(std::string source);
-    std::set<std::string> reachableCities(std::string source);
-    double minDistance(std::string source, std::string target, bool mode = false);
+    std::vector<std::string> reachableAirports(const std::string &source);
+    std::set<std::string> reachableCities(const std::string &source);
+    double minDistance(const std::string &source, const std::string &target, bool mode);
+    std::list<Airport*> path(Airport *source, Airport *target);
 
 };
 

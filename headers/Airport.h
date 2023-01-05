@@ -24,6 +24,7 @@ class Airport {
     // Graph traversal variables:
     bool token;
     double distance;
+    Airport *prev;
 
 public:
     Airport(std::string code, std::string name, std::string city, std::string country, Coordinate coordinate);
@@ -35,13 +36,15 @@ public:
     [[nodiscard]] std::list<Flight> getFlights() const;
     [[nodiscard]] bool getToken() const;
     [[nodiscard]] double getDistance() const;
+    [[nodiscard]] Airport *getPrev() const;
     void setToken(bool token);
     void setDistance(double distance);
+    void setPrev(Airport *prev);
 
     void addFlight(Flight f);
 };
 
-struct AiportCompare {
+struct AirportCompare {
     bool operator()(const Airport *a1, const Airport *a2) {
         return a1->getDistance() > a2->getDistance();
     }

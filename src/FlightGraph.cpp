@@ -27,7 +27,7 @@ void FlightGraph::addFlight(Airport *source, Airport *target, Airline *airline) 
 //
 // Depth-First Search:
 //
-void FlightGraph::dfs(string airport) {
+void FlightGraph::dfs(const string &airport) {
     airports[airport]->setToken(true);
     for (Flight flight : airports[airport]->getFlights()) {
         string ap = flight.getTarget()->getCode();
@@ -36,38 +36,66 @@ void FlightGraph::dfs(string airport) {
     }
 }
 
-void FlightGraph::dfsList(string airport, vector<string> &vairports) {
+void FlightGraph::listComponent(const string &airport, vector<string> &vairports) {
     airports[airport]->setToken(true);
     vairports.push_back(airport);
     for (Flight flight : airports[airport]->getFlights()) {
         string ap = flight.getTarget()->getCode();
         if (!airports[ap]->getToken())
-            dfsList(ap, vairports);
+            listComponent(ap, vairports);
     }
 }
 
 //
 // Breadth-First Search:
 //
-void FlightGraph::dijkstra(const string &source, bool mode) {
-    for (auto &[name, airport] : airports) {
-        airport->setToken(false);
-        airport->setDistance(40075.017);
+void FlightGraph::countFlights(const string &airport) {
+    for (auto &[name, apt] : airports) {
+        airports[name]->setToken(false);
+        airports[name]->setDistance(-1);
+        apt->setPrev(nullptr);
     }
-    airports[source]->setToken(true);
-    airports[source]->setDistance(0);
+    queue<Airport*> q;
 
-    priority_queue<Airport*, vector<Airport*>, AiportCompare> pq;
-    pq.push(airports[source]);
+    q.push(airports[airport]);
+    airports[airport]->setToken(true);
+    airports[airport]->setDistance(0);
+
+    while (!q.empty()) {
+        Airport *source = q.front(); q.pop();
+        for (Flight flight : source->getFlights()) {
+            Airport *target = flight.getTarget();
+            if (!target->getToken()) {
+                target->setPrev(source);
+                target->setToken(true);
+                target->setDistance(source->getDistance() + 1);
+                q.push(target);
+            }
+        }
+    }
+}
+
+void FlightGraph::dijkstra(const string &airport) {
+    for (auto &[name, apt] : airports) {
+        apt->setToken(false);
+        apt->setDistance(40075.017);
+        apt->setPrev(nullptr);
+    }
+    airports[airport]->setToken(true);
+    airports[airport]->setDistance(0);
+
+    priority_queue<Airport*, vector<Airport*>, AirportCompare> pq;
+    pq.push(airports[airport]);
 
      while (!pq.empty()) {
-        Airport *u = pq.top(); pq.pop();
+        Airport *source = pq.top(); pq.pop();
 
-        for (Flight e : u->getFlights()) {
-            Airport *v = e.getTarget();
-            if (v->getDistance() > u->getDistance() + e.getDistance()) {
-                v->setDistance(u->getDistance() + (mode ? 1 : e.getDistance()));
-                pq.push(v);
+        for (Flight e : source->getFlights()) {
+            Airport *dest = e.getTarget();
+            if (dest->getDistance() > source->getDistance() + e.getDistance()) {
+                dest->setPrev(source);
+                dest->setDistance(source->getDistance() +  e.getDistance());
+                pq.push(dest);
             }
         }
     }
@@ -76,21 +104,36 @@ void FlightGraph::dijkstra(const string &source, bool mode) {
 //
 // Search call functions:
 //
-std::vector<std::string> FlightGraph::reachableAirports(string source) {
+std::vector<std::string> FlightGraph::reachableAirports(const string &source) {
     vector<string> res;
     for (auto &[name, airport] : airports)
         airports[name]->setToken(false);
-    dfsList(source, res);
+    listComponent(source, res);
     return res;
 }
 
-std::set<std::string> FlightGraph::reachableCities(std::string source) {
+std::set<std::string> FlightGraph::reachableCities(const std::string &source) {
     return std::set<std::string>();
 }
 
-double FlightGraph::minDistance(std::string source, std::string target, bool mode) {
-    dijkstra(source, mode);
+double FlightGraph::minDistance(const std::string &source, const std::string &target, bool mode) {
+    if (mode)
+        countFlights(source);
+    else
+        dijkstra(source);
+
     return airports[target]->getDistance();
 }
+
+std::list<Airport *> FlightGraph::path(Airport *source, Airport *target) {
+    Airport *tmp = target;
+    std::list<Airport*> ret;
+    while (tmp->getPrev() != source) {
+        ret.push_front(tmp);
+        tmp = tmp->getPrev();
+    }
+    return ret;
+}
+
 
 

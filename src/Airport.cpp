@@ -48,6 +48,10 @@ double Airport::getDistance() const {
     return distance;
 }
 
+Airport *Airport::getPrev() const {
+    return prev;
+}
+
 void Airport::setToken(bool token) {
     this->token = token;
 }
@@ -59,5 +63,10 @@ void Airport::setDistance(double distance) {
 void Airport::addFlight(Flight f) {
     flights.push_back(f);
 }
+
+void Airport::setPrev(Airport *prev) {
+    this->prev = prev;
+}
+
 
 
