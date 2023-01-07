@@ -18,15 +18,15 @@
 
 typedef std::unordered_map<std::string, Airline*> UMairlines;
 typedef std::unordered_map<std::string, Airport*> UMairports;
-typedef std::unordered_set<City*, CityHash, CityHash> UScities;
-typedef std::unordered_set<Country*, CountryHash, CountryHash> UScountries;
+typedef std::unordered_map<std::string, City*> UMcities;
+typedef std::unordered_map<std::string, Country*> UMcountries;
 
 class DataManager {
     std::string path;
     UMairlines airlines;
     UMairports airports;
-    UScities cities;
-    UScountries countries;
+    UMcities cities;
+    UMcountries countries;
     FlightGraph *fg;
 
     void readAirlines();
@@ -37,8 +37,8 @@ public:
     UMairlines getAirlines() const;
     UMairports getAirports() const;
     FlightGraph *getFlightsGraph() const;
-    UScountries getCountries() const;
-    UScities getCities() const;
+    UMcountries getCountries() const;
+    UMcities getCities() const;
 
     FlightGraph createFlightGraph();
 };

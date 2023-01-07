@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 #include <vector>
 #include <string>
@@ -22,9 +23,14 @@ public:
 
     void run();
     void mainMenu();
-    void sourceMenu();
+    void airportsMenu();
     bool reachableAirports(Airport *source);
     bool flightInfo(Airport *source, Airport *target);
+    void countriesMenu();
+    bool countryInfo(Country *country);
+    void citiesMenu();
+    bool cityInfo(City *city);
+    void fastSearchMenu();
 
     void cleanTerminal();
 

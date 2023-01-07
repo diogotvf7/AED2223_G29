@@ -32,15 +32,9 @@ void DataManager::readAirlines() {
         getline(tmp, country);
 
         airlines[code] = new Airline(code, name, callsign, country);
-        Country *c = new Country(country);
-        auto itr = countries.find(c);
-        if (itr == countries.end()) {
-            c->addAirline(airlines[code]);
-            countries.insert(c);
-        } else {
-            delete c;
-            (*itr)->addAirline(airlines[code]);
-        }
+        if (countries.find(country) == countries.end())
+            countries.emplace(country, new Country(country));
+        countries[country]->addAirline(airlines[code]);
     }
 }
 
@@ -63,25 +57,14 @@ void DataManager::readAirports() {
         getline(tmp, longitude, ',');
 
         airports[code] = new Airport(code, name, city, country, Coordinate(stod(latitude), stod(longitude)));
-        Country *c1 = new Country(country);
-        auto itr1 = countries.find(c1);
-        if (itr1 == countries.end()) {
-            c1->addAirline(airlines[code]);
-            countries.insert(c1);
-        } else {
-            delete c1;
-            (*itr1)->addAirline(airlines[code]);
-        }
-        City *c2 = new City(city);
-        auto itr2 = cities.find(c2);
-        if (itr2 == cities.end()) {
-            c2->addAirport(airports[code]);
-            cities.insert(c2);
-        } else {
-            delete c2;
-            (*itr2)->addAirport(airports[code]);
-        }
-
+        if (countries.find(country) == countries.end())
+            countries.emplace(country, new Country(country));
+        countries[country]->addAirport(airports[code]);
+        if (cities.find(city) == cities.end())
+            cities.emplace(city, new City(city));
+        cities[city]->addAirport(airports[code]);
+        countries[country]->addAirport(airports[code]);
+        countries[country]->addCity(cities[city]);
     }
 }
 
@@ -118,11 +101,11 @@ FlightGraph *DataManager::getFlightsGraph() const {
     return fg;
 }
 
-UScountries DataManager::getCountries() const {
+UMcountries DataManager::getCountries() const {
     return countries;
 }
 
-UScities DataManager::getCities() const {
+UMcities DataManager::getCities() const {
     return cities;
 }
 

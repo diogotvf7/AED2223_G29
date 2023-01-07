@@ -14,12 +14,16 @@ string Country::getName() const {
     return name;
 }
 
-list<Airport*> Country::getAirports() const {
+std::vector<Airport*> Country::getAirports() const {
     return airports;
 }
 
-list<Airline*> Country::getAirlines() const {
+std::vector<Airline*> Country::getAirlines() const {
     return airlines;
+}
+
+std::vector<City*> Country::getCities() const {
+    return cities;
 }
 
 void Country::addAirport(Airport *airport) {
@@ -28,4 +32,8 @@ void Country::addAirport(Airport *airport) {
 
 void Country::addAirline(Airline *airline) {
     airlines.push_back(airline);
+}
+
+void Country::addCity(City *city) {
+    cities.push_back(city);
 }

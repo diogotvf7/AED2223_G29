@@ -23,19 +23,4 @@ public:
     void addAirport(Airport *airport);
 };
 
-struct CityHash {
-    int operator() (const City *c) const {
-        int hashValue = 0;
-        for (auto ch : c->getName()) {
-            hashValue = hashValue * 37 + ch;
-        }
-        return hashValue;
-    }
-
-    bool operator() (const City *c1, const City *c2) const {
-        return c1->getName() == c2->getName();
-    }
-};
-
-
 #endif //AED2223_G29_CITY_H

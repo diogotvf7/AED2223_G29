@@ -5,39 +5,29 @@
 #ifndef AED2223_G29_COUNTRY_H
 #define AED2223_G29_COUNTRY_H
 
-#include <list>
+#include <vector>
 #include <string>
 
 #include "Airport.h"
 #include "Airline.h"
+#include "City.h"
 
 class Country {
     std::string name;
-    std::list<Airport*> airports;
-    std::list<Airline*> airlines;
+    std::vector<Airport*> airports;
+    std::vector<Airline*> airlines;
+    std::vector<City*> cities;
 
 public:
     Country(std::string name);
     [[nodiscard]] std::string getName() const;
-    [[nodiscard]] std::list<Airport*> getAirports() const;
-    [[nodiscard]] std::list<Airline*> getAirlines() const;
+    [[nodiscard]] std::vector<Airport*> getAirports() const;
+    [[nodiscard]] std::vector<Airline*> getAirlines() const;
+    [[nodiscard]] std::vector<City*> getCities() const;
 
     void addAirport(Airport *airport);
     void addAirline(Airline *airline);
-};
-
-struct CountryHash {
-    int operator() (const Country *c) const {
-        int hashValue = 0;
-        for (auto ch : c->getName()) {
-            hashValue = hashValue * 37 + ch;
-        }
-        return hashValue;
-    }
-
-    bool operator() (const Country *c1, const Country *c2) const {
-        return c1->getName() == c2->getName();
-    }
+    void addCity(City *city);
 };
 
 #endif //AED2223_G29_COUNTRY_H

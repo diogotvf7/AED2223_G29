@@ -128,7 +128,8 @@ double FlightGraph::minDistance(const std::string &source, const std::string &ta
 std::list<Airport *> FlightGraph::path(Airport *source, Airport *target) {
     Airport *tmp = target;
     std::list<Airport*> ret;
-    while (tmp->getPrev() != source) {
+
+    while (tmp != nullptr) {
         ret.push_front(tmp);
         tmp = tmp->getPrev();
     }

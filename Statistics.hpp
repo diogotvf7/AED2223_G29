@@ -49,8 +49,23 @@ public:
         cout << '\n';
     }
 
+    void citiesWithMoreThanOneAirport() {
+
+        cout << setw(65) << right << "Cities with more than one airport:\n";
+        cout << setw(65) << right << "__________________________________\n";
+
+        UMcities cities = dm->getCities();
+        auto itr = cities.begin();
+        while (itr != cities.end()) {
+            if (itr->second->getAirports().size() > 1)
+                cout << "   :" << setw(40) << right << itr->first << "  --  " << itr->second->getAirports().size() << " airports" << '\n';
+            itr++;
+        }
+    }
+
     void runStatistics() {
         airportsByCountry();
         airlinesByCountry();
+        citiesWithMoreThanOneAirport();
     };
 };
