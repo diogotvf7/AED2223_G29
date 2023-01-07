@@ -60,18 +60,18 @@ void Menu::run() {
 
 void Menu::mainMenu() {
     cleanTerminal();
-    cout << "__________________________________________________________________________________________\n"
-         << "|                                       Main menu                                        |\n"
-         << "|                              Choose an option to continue                              |\n"
-         << "|________________________________________________________________________________________|\n"
-         << "|                                                                                        |\n"
-         << "|                              1. SEE AIRPORTS                                           |\n"
-         << "|                              2. SEE AIRLINES                                           |\n"
-         << "|                              3. SEE COUNTRIES                                          |\n"
-         << "|                              4. SEE CITIES                                             |\n"
-         << "|                              5. FAST SEARCH                                            |\n"
-         << "|                              6. EXIT                                                   |\n"
-         << "|________________________________________________________________________________________|\n\n";
+    cout << "__________________________________________________________________________________________________________________________________\n"
+         << "|                                                           Main menu                                                            |\n"
+         << "|                                                  Choose an option to continue                                                  |\n"
+         << "|________________________________________________________________________________________________________________________________|\n"
+         << "|                                                                                                                                |\n"
+         << "|                                                  1. SEE AIRPORTS                                                               |\n"
+         << "|                                                  2. SEE AIRLINES                                                               |\n"
+         << "|                                                  3. SEE COUNTRIES                                                              |\n"
+         << "|                                                  4. SEE CITIES                                                                 |\n"
+         << "|                                                  5. FAST SEARCH                                                                |\n"
+         << "|                                                  6. EXIT                                                                       |\n"
+         << "|________________________________________________________________________________________________________________________________|\n\n";
 
     while (true) {
         cout << "   - OPTION: "; cin >> input;
@@ -88,10 +88,10 @@ void Menu::airportsMenu() {
     vector<Airport*> airportsCache;
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                       AIRPORTS                                         |\n"
-             << "|                          SELECT AN AIRPORT TO BE YOUR SOURCE                           |\n"
-             << "|________________________________________________________________________________________|\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                           AIRPORTS                                                             |\n"
+             << "|                                              SELECT AN AIRPORT TO BE YOUR SOURCE                                               |\n"
+             << "|________________________________________________________________________________________________________________________________|\n";
         for (int i = page * 20; i < min(page * 20 + 20, (int) airport.size()); i++) {
             if (airportsCache.size() <= i) {
                 airportsCache.push_back(itr->second);
@@ -100,26 +100,27 @@ void Menu::airportsMenu() {
             cout << right << setw(20) << to_string(i + 1) + ".   " << left << setw(30)
                  << airportsCache[i]->getCode() + " " + airportsCache[i]->getName() << endl;
         }
-        cout << "__________________________________________________________________________________________\n"
-             << "|                         WRITE A NUMBER TO SEE POSSIBLE TARGETS                         |\n"
-             << "|                 WRITE A COUNTRY OR CITY's NAME TO FILTER IT'S AIRPORTS                 |\n"
-             << "|                                   WRITE W TO MOVE UP                                   |\n"
-             << "|                                  WRITE S TO MOVE DOWN                                  |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                             WRITE A NUMBER TO SEE POSSIBLE TARGETS                                             |\n"
+             << "|                                     WRITE A COUNTRY OR CITY's NAME TO FILTER IT'S AIRPORTS                                     |\n"
+             << "|                                                       WRITE W TO MOVE UP                                                       |\n"
+             << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
             cout << "   - OPTION: "; cin >> input;
+            string tmp = input;
             if (isNumerical(input) && page * 20 + 1 <= stoi(input) && stoi(input) <= min(page * 20 + 20, (int) airport.size())) {
                 while (true) {
                     cout << "   - 1. Display airport info" << endl
                          << "   - 2. Display possible targets" << endl;
                     cin >> input;
                     if (input == "1")
-                        alive = airportInfo(airportsCache[stoi(input) - 1]);
+                        alive = airportInfo(airportsCache[stoi(tmp) - 1]);
                     if (input == "2")
-                         alive = reachableAirports(airportsCache[stoi(input) - 1]);
+                         alive = reachableAirports(airportsCache[stoi(tmp) - 1]);
                     break;
                 }
                 break;
@@ -145,14 +146,15 @@ bool Menu::airportInfo(Airport *source) {
     vector<string> cache;
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                  AIRPORT INFO MENU                                     |\n";
-        if (mode == 0) cout << "|                 DISPLAYING POSSIBLE TARGET AIRPORTS IN " << setw(2) << left << gap << " FLIGHTS                      |\n";
-        if (mode == 1) cout << "|                DISPLAYING POSSIBLE TARGET COUNTRIES IN " << setw(2) << left << gap << " FLIGHTS                      |\n";
-        if (mode == 2) cout << "|                   DISPLAYING POSSIBLE TARGET CITIES IN " << setw(2) << left << gap << " FLIGHTS                      |\n";
-        if (mode == 3) cout << "|                      DISPLAYING POSSIBLE AIRLINES IN " << setw(2) << left << gap << " FLIGHTS                        |\n";
-        cout << "|                            THERE ARE "<< setw(4) << right << targets.size() << " POSSIBLE OPTIONS                             |\n" <<
-                "|________________________________________________________________________________________|\n";
+        string header = source->getCode() + "   " + source->getName();
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|" << setw(65 + (int) header.size() / 2) << right << header << setw(65 - (int) header.size() / 2) << right << " |\n";
+        if (mode == 0) cout << "|                                     DISPLAYING POSSIBLE TARGET AIRPORTS IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
+        if (mode == 1) cout << "|                                    DISPLAYING POSSIBLE TARGET COUNTRIES IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
+        if (mode == 2) cout << "|                                       DISPLAYING POSSIBLE TARGET CITIES IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
+        if (mode == 3) cout << "|                                          DISPLAYING POSSIBLE AIRLINES IN " << setw(2) << left << gap << " FLIGHTS                                            |\n";
+        cout << "|                                                THERE ARE "<< setw(4) << right << targets.size() << " POSSIBLE OPTIONS                                                 |\n" <<
+                "|________________________________________________________________________________________________________________________________|\n";
         for (int i = page * 20; i < min(page * 20 + 20, (int) targets.size()); i++) {
             if (cache.size() <= i) {
                 cache.push_back(*itr);
@@ -161,23 +163,23 @@ bool Menu::airportInfo(Airport *source) {
             cout << right << setw(20) << to_string(i + 1) + ".   " << right << setw(30)
                  << cache[i] << endl;
         }
-        cout << "__________________________________________________________________________________________\n";
+        cout << "__________________________________________________________________________________________________________________________________\n";
         if (mode == 0)
-            cout << "|                            WRITE A NUMBER TO GO TO FLIGHT MENU                         |\n";
+            cout << "|                                                WRITE A NUMBER TO GO TO FLIGHT MENU                                             |\n";
         if (mode == 1)
-            cout << "|                            WRITE A NUMBER TO GO TO COUNTRY MENU                        |\n";
+            cout << "|                                                WRITE A NUMBER TO GO TO COUNTRY MENU                                            |\n";
         if (mode == 2)
-            cout << "|                             WRITE A NUMBER TO GO TO CITY MENU                          |\n";
-        cout << "|                             WRITE W OR S TO MOVE UP OR DOWN                            |\n";
-        if (mode == 0) cout << "|                               WRITE D TO GO TO NEXT MODE                               |\n";
-        else if (mode == 1 || mode == 2) cout << "|                       WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                      |\n";
-        else if (mode == 3) cout << "|                             WRITE A TO GO TO PREVIOUS MODE                             |\n";
-        if (gap == 1) cout << "|                            WRITE U TO INCREASE MAX FLIGHTS                            |\n";
-        if (1 < gap && gap < 9) cout << "|                    WRITE U OR J TO INCREASE OR DECREASE MAX FLIGHTS                    |\n";
-        if (gap == 9) cout << "|                            WRITE J TO DECREASE MAX FLIGHTS                            |\n";
-        cout << "|                         WRITE BACK TO GO TO THE PREVIOUS MENU                          |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+            cout << "|                                                 WRITE A NUMBER TO GO TO CITY MENU                                              |\n";
+        cout << "|                                                 WRITE W OR S TO MOVE UP OR DOWN                                                |\n";
+        if (mode == 0) cout << "|                                                   WRITE D TO GO TO NEXT MODE                                                   |\n";
+        else if (mode == 1 || mode == 2) cout << "|                                           WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                                          |\n";
+        else if (mode == 3) cout << "|                                                 WRITE A TO GO TO PREVIOUS MODE                                                 |\n";
+        if (gap == 1) cout << "|                                                WRITE U TO INCREASE MAX FLIGHTS                                                |\n";
+        if (1 < gap && gap < 9) cout << "|                                        WRITE U OR J TO INCREASE OR DECREASE MAX FLIGHTS                                        |\n";
+        if (gap == 9) cout << "|                                                WRITE J TO DECREASE MAX FLIGHTS                                                |\n";
+        cout << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
@@ -245,24 +247,24 @@ bool Menu::reachableAirports(Airport *source) {
 
     while (alive) {
         cleanTerminal();
-        cout << "_________________________________________________________________________________________\n"
-             << "|                                 POSSIBLE DESTINATIONS                                  |\n"
-             << "|                       SELECT AN AIRPORT TO SEE FLIGHT INFORMATION                      |\n"
-             << "|________________________________________________________________________________________|\n";
-
+        string header = source->getCode() + "   " + source->getName();
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|" << setw(65 + (int) header.size() / 2) << right << header << setw(65 - (int) header.size() / 2) << right << " |\n"
+             << "|                                           SELECT AN AIRPORT TO SEE FLIGHT INFORMATION                                          |\n"
+             << "|________________________________________________________________________________________________________________________________|\n";
         for (int i = page * 20 + 1; i <= min(page * 20 + 20, (int) targets.size()); i++) {
             cout << right << setw(20) << to_string(i) + ".   " << left << setw(30)
                  << airports[targets[i]]->getCode() + " " + airports[targets[i]]->getName();
             cout << endl;
         }
-        cout << "__________________________________________________________________________________________\n"
-             << "|                           WRITE A NUMBER TO SEE AIRPORT MENU                           |\n"
-             << "|                  WRITE A COUNTRY OR CITY's NAME TO SEE IT'S AIRPORTS                   |\n"
-             << "|                                   WRITE W TO MOVE UP                                   |\n"
-             << "|                                  WRITE S TO MOVE DOWN                                  |\n"
-             << "|                         WRITE BACK TO GO TO THE PREVIOUS MENU                          |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                               WRITE A NUMBER TO SEE AIRPORT MENU                                               |\n"
+             << "|                                      WRITE A COUNTRY OR CITY's NAME TO SEE IT'S AIRPORTS                                       |\n"
+             << "|                                                       WRITE W TO MOVE UP                                                       |\n"
+             << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
+             << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
@@ -289,7 +291,6 @@ bool Menu::reachableAirports(Airport *source) {
 bool Menu::flightInfo(Airport *source, Airport *target) {
     double minDistance = dm->getFlightsGraph()->minDistance(source->getCode(), target->getCode(), false);
     list<Airport*> minDistancePath = dm->getFlightsGraph()->path(source, target);
-    // double minNumberFlights = dm->getFlightsGraph()->countFlights(source->getCode());
     double minNumberFlights = dm->getFlightsGraph()->minDistance(source->getCode(), target->getCode(), true);
     list<Airport*> minNumberFlightsPath = dm->getFlightsGraph()->path(source, target);
 
@@ -297,30 +298,30 @@ bool Menu::flightInfo(Airport *source, Airport *target) {
 
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                  FLIGHT INFORMATION                                    |\n"
-             << "|                                                                                        |\n"
-             << "|________________________________________________________________________________________|\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                      FLIGHT INFORMATION                                                        |\n"
+             << "|                                                                                                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n";
         cout << right << setw(5) << source->getCode() << " : " << setw(60) << left << source->getName() << ' ' << source->getCoordinate() << ' ' << source->getCountry() << endl;
         cout << right << setw(10)  << " to " << endl;
         cout << right << setw(5) << target->getCode() << " : " << setw(60) << left << target->getName() << ' ' << target->getCoordinate() << ' ' << target->getCountry() << endl;
-        cout << "__________________________________________________________________________________________\n";
+        cout << "__________________________________________________________________________________________________________________________________\n";
         cout << right << setw(20) << "Minimum distance: " << minDistance << " km;" << endl;
         auto itr1 = minDistancePath.begin(); int counter1 = 1;
         while (itr1 != minDistancePath.end()) {
             cout << right << setw(7) << counter1++ << ": " << (*itr1)->getCode() << ' ' << (*itr1++)->getName() << endl;
         }
-        cout << "__________________________________________________________________________________________\n";
+        cout << "__________________________________________________________________________________________________________________________________\n";
         cout << right << setw(20) << "Minimum number of flights: " << minNumberFlights << " flights;" << endl;
         auto itr2 = minNumberFlightsPath.begin(); int counter2 = 1;
         while (itr2 != minNumberFlightsPath.end()) {
             cout << right << setw(7) << counter2++ << ": " << (*itr2)->getCode() << ' ' << (*itr2++)->getName() << endl;
         }
 
-        cout << "__________________________________________________________________________________________\n"
-             << "|                         WRITE BACK TO GO TO THE PREVIOUS MENU                          |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
@@ -347,10 +348,10 @@ void Menu::countriesMenu() {
     vector<Country*> countriesCache;
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                       Countries                                        |\n"
-             << "|                                   SELECT A COUNTRY                                     |\n"
-             << "|________________________________________________________________________________________|\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                           Countries                                                            |\n"
+             << "|                                                       SELECT A COUNTRY                                                         |\n"
+             << "|________________________________________________________________________________________________________________________________|\n";
         for (int i = page * 20; i < min(page * 20 + 20, (int) countries.size()); i++) {
             if (countriesCache.size() <= i) {
                 countriesCache.push_back(itr->second);
@@ -359,11 +360,11 @@ void Menu::countriesMenu() {
             cout << right << setw(20) << to_string(i) + ".   " << left << setw(30)
                  << countriesCache[i]->getName() << " : " << countriesCache[i]->getAirports().size() << " airports;" << endl;
         }
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                   WRITE W TO MOVE UP                                   |\n"
-             << "|                                  WRITE S TO MOVE DOWN                                  |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                       WRITE W TO MOVE UP                                                       |\n"
+             << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
@@ -393,12 +394,13 @@ bool Menu::countryInfo(Country *country) {
     int mode = 0;
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                       Country                                          |\n";
-        if (mode == 0) cout << "|                                  DISPLAYING CITIES                                     |\n";
-        else if (mode == 1) cout << "|                                 DISPLAYING AIRLINES                                    |\n";
-        else if (mode == 2) cout << "|                                 DISPLAYING AIRPORTS                                    |\n";
-        cout << "|________________________________________________________________________________________|\n";
+        string header = country->getName();
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|" << setw(65 + (int) header.size() / 2) << right << header << setw(65 - (int) header.size() / 2) << right << " |\n";
+        if (mode == 0) cout << "|                                                      DISPLAYING CITIES                                                         |\n";
+        else if (mode == 1) cout << "|                                                     DISPLAYING AIRLINES                                                        |\n";
+        else if (mode == 2) cout << "|                                                     DISPLAYING AIRPORTS                                                        |\n";
+        cout << "|________________________________________________________________________________________________________________________________|\n";
 
         int maxIndex = (int) cities.size() * (mode == 0) + (int) airlines.size() * (mode == 1) + (int) airports.size() * (mode == 2);
         for (int i = page * 20; i < min(page * 20 + 20, maxIndex); i++) {
@@ -413,18 +415,18 @@ bool Menu::countryInfo(Country *country) {
                      << airports[i]->getCode() << ' ' << setw(60) << left << airports[i]->getName() << airports[i]->getCoordinate() << endl;
 
         }
-        cout << "__________________________________________________________________________________________\n";
+        cout << "__________________________________________________________________________________________________________________________________\n";
         if (mode == 0)
-            cout << "|                            WRITE A NUMBER TO GO TO CITY MENU                           |\n";
+            cout << "|                                                WRITE A NUMBER TO GO TO CITY MENU                                               |\n";
         if (mode == 2)
-            cout << "|                           WRITE A NUMBER TO GO TO AIRPORT MENU                         |\n";
-        cout << "|                             WRITE W OR S TO MOVE UP OR DOWN                            |\n";
-        if (mode == 0) cout << "|                               WRITE D TO GO TO NEXT MODE                               |\n";
-        if (mode == 1) cout << "|                       WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                      |\n";
-        if (mode == 2) cout << "|                             WRITE A TO GO TO PREVIOUS MODE                             |\n";
-        cout << "|                         WRITE BACK TO GO TO THE PREVIOUS MENU                          |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+            cout << "|                                               WRITE A NUMBER TO GO TO AIRPORT MENU                                             |\n";
+        cout << "|                                                 WRITE W OR S TO MOVE UP OR DOWN                                                |\n";
+        if (mode == 0) cout << "|                                                   WRITE D TO GO TO NEXT MODE                                                   |\n";
+        if (mode == 1) cout << "|                                           WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                                          |\n";
+        if (mode == 2) cout << "|                                                 WRITE A TO GO TO PREVIOUS MODE                                                 |\n";
+        cout << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
@@ -469,10 +471,10 @@ void Menu::citiesMenu() {
     vector<City*> citiesCache;
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                         Cities                                         |\n"
-             << "|                                     SELECT A CITY                                      |\n"
-             << "|________________________________________________________________________________________|\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                             Cities                                                             |\n"
+             << "|                                                         SELECT A CITY                                                          |\n"
+             << "|________________________________________________________________________________________________________________________________|\n";
         for (int i = page * 20; i < min(page * 20 + 20, (int) cities.size()); i++) {
             if (citiesCache.size() <= i) {
                 citiesCache.push_back(itr->second);
@@ -481,11 +483,11 @@ void Menu::citiesMenu() {
             cout << right << setw(20) << to_string(i) + ".   " << left << setw(30)
                  << citiesCache[i]->getName() << " : " << citiesCache[i]->getAirports().size() << " airports;" << endl;
         }
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                   WRITE W TO MOVE UP                                   |\n"
-             << "|                                  WRITE S TO MOVE DOWN                                  |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                       WRITE W TO MOVE UP                                                       |\n"
+             << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
@@ -511,20 +513,21 @@ bool Menu::cityInfo(City *city) {
 
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                         City                                           |\n"
-             << "|                                  SELECT AN AIRPORT                                     |\n"
-             << "|________________________________________________________________________________________|\n";
+        string header = city->getName();
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|" << setw(65 + (int) header.size() / 2) << right << header << setw(65 - (int) header.size() / 2) << right << " |\n"
+             << "|                                                      SELECT AN AIRPORT                                                         |\n"
+             << "|________________________________________________________________________________________________________________________________|\n";
         for (int i = 0; i < city->getAirports().size(); i++) {
             cout << right << setw(20) << to_string(i + 1) + ".   " << left << setw(30)
                  << city->getAirports()[i]->getCode() + " " + city->getAirports()[i]->getName() << endl;
         }
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                   WRITE W TO MOVE UP                                   |\n"
-             << "|                                  WRITE S TO MOVE DOWN                                  |\n"
-             << "|                         WRITE BACK TO GO TO THE PREVIOUS MENU                          |\n"
-             << "|                           WRITE MENU TO GO TO THE MAIN MENU                            |\n"
-             << "|________________________________________________________________________________________|\n\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                       WRITE W TO MOVE UP                                                       |\n"
+             << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
+             << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
+             << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n";
         while (true) {
 
             cout << "   - OPTION: ";
@@ -559,10 +562,10 @@ void Menu::fastSearchMenu() {
 
     while (alive) {
         cleanTerminal();
-        cout << "__________________________________________________________________________________________\n"
-             << "|                                    Fast search menu                                    |\n"
-             << "|            Write the code of two airports to be your source and destination            |\n"
-             << "|________________________________________________________________________________________|\n\n\n\n";
+        cout << "__________________________________________________________________________________________________________________________________\n"
+             << "|                                                        Fast search menu                                                        |\n"
+             << "|                                Write the code of two airports to be your source and destination                                |\n"
+             << "|________________________________________________________________________________________________________________________________|\n\n\n\n";
         while (true) {
             cout << right << setw(20) << "Source: "; cin >> input; cout << endl;
             if (dm->getAirports().find(input) != dm->getAirports().end()) {
