@@ -63,7 +63,6 @@ void DataManager::readAirports() {
         if (cities.find(city) == cities.end())
             cities.emplace(city, new City(city));
         cities[city]->addAirport(airports[code]);
-        countries[country]->addAirport(airports[code]);
         countries[country]->addCity(cities[city]);
     }
 }
@@ -97,16 +96,16 @@ UMairports DataManager::getAirports() const {
     return airports;
 }
 
-FlightGraph *DataManager::getFlightsGraph() const {
-    return fg;
-}
-
 UMcountries DataManager::getCountries() const {
     return countries;
 }
 
 UMcities DataManager::getCities() const {
     return cities;
+}
+
+FlightGraph *DataManager::getFlightsGraph() const {
+    return fg;
 }
 
 FlightGraph DataManager::createFlightGraph() {

@@ -9,6 +9,7 @@
 #include <sstream>
 #include <vector>
 #include <set>
+#include <unordered_set>
 #include <unordered_map>
 #include <string>
 
@@ -38,12 +39,16 @@ public:
     void listComponent(const std::string &airport, std::vector<std::string> &vairports);
 
     // Breadth-First Search:
-    void countFlights(const std::string &airport);
-    void dijkstra(const std::string &airport);
+    void countFlights(const std::string &source);
+    void dijkstra(const std::string &source);
+    std::unordered_set<std::string> bfsInNFlights(const std::string &source, int n, int mode);
 
     // Search call functions:
     std::vector<std::string> reachableAirports(const std::string &source);
-    std::set<std::string> reachableCities(const std::string &source);
+    std::unordered_set<std::string> airportsInNFlights(const std::string &source, int n);
+    std::unordered_set<std::string> countriesInNFlights(const std::string &source, int n);
+    std::unordered_set<std::string> citiesInNFlights(const std::string &source, int n);
+    std::unordered_set<std::string> airlinesInNFlights(const std::string &source, int n);
     double minDistance(const std::string &source, const std::string &target, bool mode);
     std::list<Airport*> path(Airport *source, Airport *target);
 

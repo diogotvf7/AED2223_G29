@@ -24,6 +24,7 @@ public:
     void run();
     void mainMenu();
     void airportsMenu();
+    bool airportInfo(Airport *source);
     bool reachableAirports(Airport *source);
     bool flightInfo(Airport *source, Airport *target);
     void countriesMenu();

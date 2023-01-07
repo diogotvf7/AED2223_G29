@@ -36,9 +36,9 @@ public:
     explicit DataManager(std::string path);
     UMairlines getAirlines() const;
     UMairports getAirports() const;
-    FlightGraph *getFlightsGraph() const;
     UMcountries getCountries() const;
     UMcities getCities() const;
+    FlightGraph *getFlightsGraph() const;
 
     FlightGraph createFlightGraph();
 };
