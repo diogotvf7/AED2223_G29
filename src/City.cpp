@@ -14,7 +14,7 @@ string City::getName() const {
     return name;
 }
 
-list<Airport*> City::getAirports() const {
+std::vector<Airport *> City::getAirports() const {
     return airports;
 }
 

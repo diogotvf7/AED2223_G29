@@ -201,5 +201,6 @@ public:
         MinDistanceBetweenAirportsTests();
         // MinMaxStackTests(); // Struct compare esta com o return trocado
         cout << "\n_____________________________________________________\n";
+        cout << "WRITE SOMETHING TO GO BACK"; string _; cin >> _;
     }
 };

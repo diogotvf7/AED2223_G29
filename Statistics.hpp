@@ -24,12 +24,9 @@ public:
         cout << setw(58) << right << "Airports by country:\n";
         cout << setw(58) << right << "____________________\n";
 
-        UMairports airports = dm->getAirports();
-        map<string,int> freqTable;
-        for (auto &[code, airport] : airports)
-            freqTable[airport->getCountry()]++;
-        for (auto &[country, freq] : freqTable)
-            cout << "   :" << setw(40) << right << country << "  --  " << freq << " airports" << '\n';
+        UMcountries countries = dm->getCountries();
+        for (auto &[code, country] : countries)
+            cout << "   :" << setw(40) << right << country->getName() << "  --  " << country->getAirports().size() << " airports" << '\n';
 
         cout << '\n';
     }
@@ -39,12 +36,9 @@ public:
         cout << setw(58) << right << "Airlines by country:\n";
         cout << setw(58) << right << "____________________\n";
 
-        UMairlines airlines = dm->getAirlines();
-        map<string,int> freqTable;
-        for (auto &[code, airline] : airlines)
-            freqTable[airline->getCountry()]++;
-        for (auto &[country, freq] : freqTable)
-            cout << "   :" << setw(40) << right << country << "  --  " << freq << " airlines" << '\n';
+        UMcountries countries = dm->getCountries();
+        for (auto &[code, country] : countries)
+            cout << "   :" << setw(40) << right << country->getName() << "  --  " << country->getAirlines().size() << " airlines" << '\n';
 
         cout << '\n';
     }
@@ -64,8 +58,11 @@ public:
     }
 
     void runStatistics() {
+        cout << "\n_____________________________________________________\n";
         airportsByCountry();
         airlinesByCountry();
         citiesWithMoreThanOneAirport();
+        cout << "\n_____________________________________________________\n";
+        cout << "WRITE SOMETHING TO GO BACK"; string _; cin >> _;
     };
 };

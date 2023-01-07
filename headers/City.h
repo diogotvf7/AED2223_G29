@@ -13,12 +13,12 @@
 
 class City {
     std::string name;
-    std::list<Airport*> airports;
+    std::vector<Airport*> airports;
 
 public:
     City(std::string name);
     [[nodiscard]] std::string getName() const;
-    [[nodiscard]] std::list<Airport*> getAirports() const;
+    [[nodiscard]] std::vector<Airport *> getAirports() const;
 
     void addAirport(Airport *airport);
 };
