@@ -46,7 +46,7 @@ void Menu::run() {
     while (alive) {
         switch (stoi(input)) {
 
-            case 0: // Main menu
+            case 0:
                 mainMenu();
                 break;
             case 1:
@@ -54,21 +54,18 @@ void Menu::run() {
                 input = "0";
                 break;
             case 2:
-                input= "0";
-                break;
-            case 3:
                 countriesMenu();
                 input = "0";
                 break;
-            case 4:
+            case 3:
                 citiesMenu();
                 input = "0";
                 break;
-            case 5:
+            case 4:
                 fastSearchMenu();
                 input = "0";
                 break;
-            case 6: // EXIT
+            case 5:
                 cleanTerminal();
                 alive = false;
                 break;
@@ -85,16 +82,15 @@ void Menu::mainMenu() {
          << "|________________________________________________________________________________________________________________________________|\n"
          << "|                                                                                                                                |\n"
          << "|                                                  1. SEE AIRPORTS                                                               |\n"
-         << "|                                                  2. SEE AIRLINES                                                               |\n"
-         << "|                                                  3. SEE COUNTRIES                                                              |\n"
-         << "|                                                  4. SEE CITIES                                                                 |\n"
-         << "|                                                  5. FAST SEARCH                                                                |\n"
-         << "|                                                  6. EXIT                                                                       |\n"
+         << "|                                                  2. SEE COUNTRIES                                                              |\n"
+         << "|                                                  3. SEE CITIES                                                                 |\n"
+         << "|                                                  4. FAST SEARCH                                                                |\n"
+         << "|                                                  5. EXIT                                                                       |\n"
          << "|________________________________________________________________________________________________________________________________|\n\n";
 
     while (true) {
         cout << "   - OPTION: "; cin >> input;
-        if ("1" <= input && input <= "6") break;
+        if ("1" <= input && input <= "5") break;
         else cout << "   - INVALID OPTION" << endl;
     }
 }
@@ -463,7 +459,7 @@ void Menu::countriesMenu() {
             } else if (normalise(input) == "s" && page * 20 + 20 < (int) countries.size()) {
                 page++;
                 break;
-            } else if (normalise(input) == "menu")
+            } else if (normalise(input) == "menu" || normalise(input) == "back")
                 return;
             else cout << "   - INVALID OPTION" << endl;
         }
@@ -586,7 +582,7 @@ void Menu::citiesMenu() {
             } else if (normalise(input) == "s" && page * 20 + 20 < (int) cities.size()) {
                 page++;
                 break;
-            } else if (normalise(input) == "menu")
+            } else if (normalise(input) == "menu" || normalise(input) == "back")
                 return;
             else cout << "   - INVALID OPTION" << endl;
         }

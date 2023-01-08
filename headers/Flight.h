@@ -16,9 +16,27 @@ class Flight {
     double distance;
 
 public:
+    /**
+     * @brief Constructor for the Flight Class
+     * @param target the target Airport pointer
+     * @param airline the pointer to the Flight's Airline
+     * @param distance the weight of the Flight Edge
+     */
     Flight(Airport *target, Airline *airline, double distance);
+    /**
+     * @brief Get method to the target Airport's pointer
+     * @return returns a pointer to the target Airport
+     */
     [[nodiscard]] Airport *getTarget() const;
+    /**
+     * @brief Get method to the Airline's pointer
+     * @return returns a pointer to the Flight's Airline
+     */
     [[nodiscard]] Airline *getAirline() const;
+    /**
+     * @brief Get method to the distance of the Flight
+     * @return returns the distance between the source Airport and the target Airport's coordinates using the Haversine's formula
+     */
     [[nodiscard]] double getDistance() const;
 };
 

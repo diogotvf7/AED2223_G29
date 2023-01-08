@@ -29,15 +29,48 @@ class DataManager {
     UMcountries countries;
     FlightGraph *fg;
 
+    /**
+     * @brief This function reads the airlines.csv file
+     */
     void readAirlines();
+    /**
+     * @brief This function reads the airports.csv file
+     */
     void readAirports();
+    /**
+     * @brief This function reads the flights.csv file
+     */
     void readFlights();
 public:
+    /**
+     * @brief Constructor for the DataManager class
+     * @param path the path from where the data will be read
+     */
     explicit DataManager(std::string path);
+    /**
+     * @brief Get method for the Airline's unordered_map field
+     * @return returns the Airline's unordered_map field
+     */
     UMairlines getAirlines() const;
+    /**
+     * @brief Get method for the Airport's unordered_map field
+     * @return returns the Airport's unordered_map field
+     */
     UMairports getAirports() const;
+    /**
+     * @brief Get method for the Countrie's unordered_map field
+     * @return returns the Countrie's unordered_map field
+     */
     UMcountries getCountries() const;
+    /**
+     * @brief Get method for the Citie's unordered_map field
+     * @return returns the Citie's unordered_map field
+     */
     UMcities getCities() const;
+    /**
+     * @brief Get method for the DataManager's FlightGraph
+     * @return returns the DataManager's FlightGraph
+     */
     FlightGraph *getFlightsGraph() const;
 };
 
