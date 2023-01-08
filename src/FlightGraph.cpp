@@ -32,9 +32,9 @@ void FlightGraph::addFlight(Airport *source, Airport *target, Airline *airline) 
 void FlightGraph::dfs(const string &airport) {
     airports[airport]->setToken(true);
     for (Flight flight : airports[airport]->getFlights()) {
-        string ap = flight.getTarget()->getCode();
-        if (!airports[ap]->getToken())
-            dfs(ap);
+        Airport *ap = flight.getTarget();
+        if (!ap->getToken())
+            dfs(ap->getCode());
     }
 }
 
@@ -42,9 +42,58 @@ void FlightGraph::listComponent(const string &airport, vector<string> &vairports
     airports[airport]->setToken(true);
     vairports.push_back(airport);
     for (Flight flight : airports[airport]->getFlights()) {
-        string ap = flight.getTarget()->getCode();
-        if (!airports[ap]->getToken())
-            listComponent(ap, vairports);
+        Airport *ap = flight.getTarget();
+        if (!ap->getToken())
+            listComponent(ap->getCode(), vairports);
+    }
+}
+
+void FlightGraph::articulationAirports(const string &airport, int &order, list<Airport*> &artAirports) {
+    airports[airport]->setToken(true); airports[airport]->setNum(order); airports[airport]->setLow(order); order++;
+
+    int children = 0;
+    bool articulation = false;
+
+    for (Flight flight : airports[airport]->getFlights()) {
+        Airport *ap = flight.getTarget();
+        if (!ap->getToken()) {
+            children++;
+            articulationAirports(ap->getCode(), order, artAirports);
+            airports[airport]->setLow(min(airports[airport]->getLow(), ap->getLow()));
+            if (ap->getLow() >= airports[airport]->getNum())
+                articulation = true;
+        }
+        else
+            airports[airport]->setLow(min(airports[airport]->getLow(), ap->getNum()));
+    }
+
+    if (airports[airport]->getNum() == 1 && children > 1 || airports[airport]->getNum() > 1 && articulation)
+        artAirports.push_back(airports[airport]);
+}
+
+void FlightGraph::stronglyConnectedComponents(const string &airport, stack<Airport*> &s, int &order, list<list<Airport*>> &sccs) {
+    airports[airport]->setToken(true); airports[airport]->setToken2(true);
+    airports[airport]->setNum(order); airports[airport]->setLow(order);
+    s.push(airports[airport]); order++;
+
+    for (Flight flight : airports[airport]->getFlights()) {
+        Airport *ap = flight.getTarget();
+        if (!ap->getToken()) {
+            stronglyConnectedComponents(ap->getCode(),s,order,sccs);
+            airports[airport]->setLow(min(airports[airport]->getLow(), ap->getLow()));
+        }
+        else if (ap->getToken2())
+            airports[airport]->setLow(min(airports[airport]->getLow(), ap->getNum()));
+    }
+
+    if (airports[airport]->getLow() == airports[airport]->getNum()) {
+        list<Airport*> scc;
+        do {
+            scc.push_back(s.top());
+            airports[s.top()->getCode()]->setToken2(false);
+            s.pop();
+        } while (scc.back()->getCode() != airport);
+        sccs.push_back(scc);
     }
 }
 
@@ -145,19 +194,19 @@ vector<string> FlightGraph::reachableAirports(const string &source) {
     return res;
 }
 
-std::unordered_set<std::string> FlightGraph::airportsInNFlights(const string &source, int n) {
+unordered_set<string> FlightGraph::airportsInNFlights(const string &source, int n) {
     return bfsInNFlights(source, n, 0);
 }
 
-std::unordered_set<std::string> FlightGraph::countriesInNFlights(const string &source, int n) {
+unordered_set<string> FlightGraph::countriesInNFlights(const string &source, int n) {
     return bfsInNFlights(source, n, 1);
 }
 
-std::unordered_set<std::string> FlightGraph::citiesInNFlights(const string &source, int n) {
+unordered_set<string> FlightGraph::citiesInNFlights(const string &source, int n) {
     return bfsInNFlights(source, n, 2);
 }
 
-std::unordered_set<std::string> FlightGraph::airlinesInNFlights(const string &source, int n) {
+unordered_set<string> FlightGraph::airlinesInNFlights(const string &source, int n) {
     return bfsInNFlights(source, n, 3);
 }
 
@@ -353,6 +402,37 @@ pair<Airport*,Airport*> FlightGraph::minDistanceCountryCountry(const string &sou
     return minimum.second;
 }
 
+list<Airport*> FlightGraph::getArticulationAirports() {
+    for (auto &[key, airport] : airports) {
+        airport->setToken(false);
+        airport->setLow(0);
+        airport->setNum(0);
+    }
+
+    int order = 1; list<Airport*> artAirports;
+    for (auto &[key, airport] : airports) {
+        articulationAirports(airport->getCode(), order, artAirports);
+    }
+    return artAirports;
+}
+
+list<list<Airport*>> FlightGraph::getStronglyConnectedComponents() {
+    for (auto &[key, airport] : airports) {
+        airport->setToken(false);
+        airport->setToken2(false);
+        airport->setLow(0);
+        airport->setNum(0);
+    }
+
+    int order = 1;
+    stack<Airport*> s; list<list<Airport*>> sccs;
+    for (auto &[key, airport] : airports)
+        if (!airport->getToken())
+            stronglyConnectedComponents(airport->getCode(), s, order, sccs);
+
+    return sccs;
+}
+
 list<Airport*> FlightGraph::path(Airport *source, Airport *target) {
     Airport *tmp = target;
     list<Airport*> ret;
@@ -363,6 +443,7 @@ list<Airport*> FlightGraph::path(Airport *source, Airport *target) {
     }
     return ret;
 }
+
 
 
 

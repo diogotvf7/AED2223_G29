@@ -23,7 +23,10 @@ class Airport {
     std::list<Flight> flights;
     // Graph traversal variables:
     bool token;
+    bool token2;
     double distance;
+    int num;
+    int low;
     Airport *prev;
 
 public:
@@ -35,11 +38,17 @@ public:
     [[nodiscard]] Coordinate getCoordinate() const;
     [[nodiscard]] std::list<Flight> getFlights() const;
     [[nodiscard]] bool getToken() const;
+    [[nodiscard]] bool getToken2() const;
     [[nodiscard]] double getDistance() const;
+    [[nodiscard]] int getNum() const;
+    [[nodiscard]] int getLow() const;
     [[nodiscard]] Airport *getPrev() const;
     void setToken(bool token);
+    void setToken2(bool token2);
     void setDistance(double distance);
     void setPrev(Airport *prev);
+    void setNum(int num);
+    void setLow(int low);
 
     void addFlight(Flight f);
 };

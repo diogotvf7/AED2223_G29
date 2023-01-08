@@ -9,6 +9,7 @@
 #include <sstream>
 #include <list>
 #include <vector>
+#include <stack>
 #include <unordered_set>
 #include <unordered_map>
 #include <string>
@@ -44,6 +45,8 @@ public:
     // Depth-First Search:
     void dfs(const std::string &airport);
     void listComponent(const std::string &airport, std::vector<std::string> &vairports);
+    void articulationAirports(const std::string &airport, int &order, std::list<Airport*> &artAirports);
+    void stronglyConnectedComponents(const std::string &airport, std::stack<Airport*> &s, int &order, std::list<std::list<Airport*>> &sccs);
 
     // Breadth-First Search:
     void countFlights(const std::string &source);
@@ -56,6 +59,7 @@ public:
     std::unordered_set<std::string> countriesInNFlights(const std::string &source, int n);
     std::unordered_set<std::string> citiesInNFlights(const std::string &source, int n);
     std::unordered_set<std::string> airlinesInNFlights(const std::string &source, int n);
+
     double minDistanceCodeCode(const std::string &source, const std::string &target, bool mode);
     std::pair<Airport*,Airport*> minDistanceCoordinateCode(Coordinate source, const std::string &target, bool mode, double radius);
     std::pair<Airport*,Airport*> minDistanceCityCode(const std::string &source, const std::string &target, bool mode);
@@ -72,6 +76,10 @@ public:
     std::pair<Airport*,Airport*> minDistanceCoordinateCountry(Coordinate source, const std::string &target, bool mode, double radius);
     std::pair<Airport*,Airport*> minDistanceCityCountry(const std::string &source, const std::string &target, bool mode);
     std::pair<Airport*,Airport*> minDistanceCountryCountry(const std::string &source, const std::string &target, bool mode);
+
+    std::list<Airport*> getArticulationAirports();
+    std::list<std::list<Airport*>> getStronglyConnectedComponents();
+
     std::list<Airport*> path(Airport *source, Airport *target);
 
 };

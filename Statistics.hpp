@@ -19,49 +19,46 @@ public:
         this->dm = dm;
     }
 
-    void airportsByCountry() {
+    void articulationAirports() {
 
-        cout << setw(58) << right << "Airports by country:\n";
-        cout << setw(58) << right << "____________________\n";
+        cout << setw(65) << right << "Articulation airports:\n";
+        cout << setw(65) << right << "______________________\n";
 
-        UMcountries countries = dm->getCountries();
-        for (auto &[code, country] : countries)
-            cout << "   :" << setw(40) << right << country->getName() << "  --  " << country->getAirports().size() << " airports" << '\n';
-
-        cout << '\n';
-    }
-
-    void airlinesByCountry() {
-
-        cout << setw(58) << right << "Airlines by country:\n";
-        cout << setw(58) << right << "____________________\n";
-
-        UMcountries countries = dm->getCountries();
-        for (auto &[code, country] : countries)
-            cout << "   :" << setw(40) << right << country->getName() << "  --  " << country->getAirlines().size() << " airlines" << '\n';
-
-        cout << '\n';
-    }
-
-    void citiesWithMoreThanOneAirport() {
-
-        cout << setw(65) << right << "Cities with more than one airport:\n";
-        cout << setw(65) << right << "__________________________________\n";
-
-        UMcities cities = dm->getCities();
-        auto itr = cities.begin();
-        while (itr != cities.end()) {
-            if (itr->second->getAirports().size() > 1)
-                cout << "   :" << setw(40) << right << itr->first << "  --  " << itr->second->getAirports().size() << " airports" << '\n';
-            itr++;
+        list<Airport*> artAirports = dm->getFlightsGraph()->getArticulationAirports();
+        auto itr = artAirports.begin(); int i = 1;
+        while (itr != artAirports.end()) {
+            cout << setw(6) << right << i <<":" << setw(40) << right << (*itr)->getCode() << " " << (*itr)->getName() << '\n';
+            itr++; i++;
         }
+
+        cout << '\n';
+    }
+
+    void stronglyConnectedComponents() {
+
+        cout << setw(65) << right << "Strongly Connected Components:\n";
+        cout << setw(65) << right << "______________________________\n";
+
+        list<list<Airport*>> sccs = dm->getFlightsGraph()->getStronglyConnectedComponents();
+        auto itr1 = sccs.begin(); int i = 1;
+        while (itr1 != sccs.end()) {
+            cout << "\n\nSCC " << i << ":    " << itr1->size() << " airports\n";
+            auto itr2 = itr1->begin(); int j = 1;
+            while (itr2 != itr1->end()) {
+                if (j % 20 == 0) cout << '\n';
+                cout << (*itr2)->getCode() << ' ';
+                itr2++; j++;
+            }
+            itr1++; i++;
+        }
+
+        cout << '\n';
     }
 
     void runStatistics() {
         cout << "\n_____________________________________________________\n";
-        airportsByCountry();
-        airlinesByCountry();
-        citiesWithMoreThanOneAirport();
+        articulationAirports();
+        stronglyConnectedComponents();
         cout << "\n_____________________________________________________\n";
         cout << "WRITE SOMETHING TO GO BACK"; string _; cin >> _;
     };

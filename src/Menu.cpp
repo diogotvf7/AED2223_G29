@@ -128,7 +128,6 @@ void Menu::airportsMenu() {
              << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
-
             cout << "   - OPTION: "; cin >> input;
             string tmp = input;
             if (isNumerical(input) && page * 20 + 1 <= stoi(input) && stoi(input) <= min(page * 20 + 20, (int) airport.size())) {
@@ -288,28 +287,33 @@ bool Menu::reachableAirports(Airport *source) {
              << "|" << setw(65 + (int) header.size() / 2) << right << header << setw(65 - (int) header.size() / 2) << right << " |\n"
              << "|                                           SELECT AN AIRPORT TO SEE FLIGHT INFORMATION                                          |\n"
              << "|________________________________________________________________________________________________________________________________|\n";
-        for (int i = page * 20 + 1; i <= min(page * 20 + 20, (int) targets.size()); i++) {
-            cout << right << setw(20) << to_string(i) + ".   " << left << setw(30)
-                 << airports[targets[i]]->getCode() + " " + airports[targets[i]]->getName();
-            cout << endl;
-        }
-        cout << "__________________________________________________________________________________________________________________________________\n"
-             << "|                                              WRITE A NUMBER TO SELECT AN AIRPORT                                               |\n"
-             << "|                                           WRITE AN AIRPORT CODE TO SELECT AN AIRPORT                                           |\n"
-             << "|                                                       WRITE W TO MOVE UP                                                       |\n"
-             << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
-             << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
+        if (targets.size() > 1)
+            for (int i = page * 20 + 1; i <= min(page * 20 + 20, (int) targets.size() - 1); i++) {
+                cout << right << setw(20) << to_string(i) + ".   " << left << setw(30)
+                     << airports[targets[i]]->getCode() + " " + airports[targets[i]]->getName();
+                cout << endl;
+            }
+        else
+            cout << "                                         There are no possible destinations from this airport!                                  " << endl;
+        cout << "__________________________________________________________________________________________________________________________________\n";
+        if (targets.size() > 1)
+            cout << "|                                              WRITE A NUMBER TO SELECT AN AIRPORT                                               |\n"
+                 << "|                                           WRITE AN AIRPORT CODE TO SELECT AN AIRPORT                                           |\n"
+                 << "|                                                       WRITE W TO MOVE UP                                                       |\n"
+                 << "|                                                      WRITE S TO MOVE DOWN                                                      |\n";
+        cout << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
              << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
              << "|________________________________________________________________________________________________________________________________|\n\n";
 
         while (true) {
 
             cout << "   - OPTION: "; cin >> input;
-            if (isNumerical(input) && page * 20 + 1 <= stoi(input) && stoi(input) <= min(page * 20 + 20, (int) targets.size())) {
+            if (isNumerical(input) && page * 20 + 1 <= stoi(input) && stoi(input) <= min(page * 20 + 20, (int) targets.size() - 1)) {
                 alive = flightInfo(source, airports[targets[stoi(input)]]);
                 break;
-            } else if (isAlpha(input) && input.size() == 3) {
-                if (dm->getAirports().find(input) == dm->getAirports().end()) cout << "   - WRONG CODE";
+            } else if (targets.size() > 1 && isAlpha(input) && input.size() == 3) {
+                // if (dm->getAirports().find(input) == dm->getAirports().end()) cout << "   - WRONG CODE";
+                if (find(targets.begin(), targets.end(), input) == targets.end()) cout << "   - WRONG CODE";
                 else alive = flightInfo(source, dm->getAirports()[input]);
                 break;
             } else if (normalise(input) == "w" && page * 20 - 20 >= 0) {
@@ -329,6 +333,11 @@ bool Menu::reachableAirports(Airport *source) {
 }
 
 bool Menu::flightInfo(Airport *source, Airport *target) {
+    if (source == nullptr || target == nullptr) {
+        cout << "There was some problem with the flight you searched for.\nTry to change some values.\n";
+        cout << "WRITE SOMETHING TO GO BACK"; string _; cin >> _;
+        return true;
+    }
     double minDistance = dm->getFlightsGraph()->minDistanceCodeCode(source->getCode(), target->getCode(), false);
     list<Airport*> minDistancePath = dm->getFlightsGraph()->path(source, target);
     double minNumberFlights = dm->getFlightsGraph()->minDistanceCodeCode(source->getCode(), target->getCode(), true);
@@ -346,16 +355,25 @@ bool Menu::flightInfo(Airport *source, Airport *target) {
         cout << right << setw(10)  << " to " << endl;
         cout << right << setw(5) << target->getCode() << " : " << setw(60) << left << target->getName() << ' ' << target->getCoordinate() << ' ' << target->getCountry() << endl;
         cout << "__________________________________________________________________________________________________________________________________\n";
-        cout << right << setw(20) << "Minimum distance: " << minDistance << " km;" << endl;
-        auto itr1 = minDistancePath.begin(); int counter1 = 1;
-        while (itr1 != minDistancePath.end()) {
-            cout << right << setw(7) << counter1++ << ": " << (*itr1)->getCode() << ' ' << (*itr1++)->getName() << endl;
-        }
-        cout << "__________________________________________________________________________________________________________________________________\n";
-        cout << right << setw(20) << "Minimum number of flights: " << minNumberFlights << " flights;" << endl;
-        auto itr2 = minNumberFlightsPath.begin(); int counter2 = 1;
-        while (itr2 != minNumberFlightsPath.end()) {
-            cout << right << setw(7) << counter2++ << ": " << (*itr2)->getCode() << ' ' << (*itr2++)->getName() << endl;
+        if (minNumberFlights == -1)
+            cout << "                               IT IS IMPOSSIBLE TO GET TO THE TARGET AIRPORT FROM THE SOURCE AIRPORT                           " << endl;
+        else {
+            cout << right << setw(20) << "Minimum distance: " << minDistance << " km;" << endl;
+            auto itr1 = minDistancePath.begin();
+            int counter1 = 1;
+            while (itr1 != minDistancePath.end()) {
+                cout << right << setw(7) << counter1++ << ": " << (*itr1)->getCode() << ' ' << (*itr1++)->getName()
+                     << endl;
+            }
+            cout
+                    << "__________________________________________________________________________________________________________________________________\n";
+            cout << right << setw(20) << "Minimum number of flights: " << minNumberFlights << " flights;" << endl;
+            auto itr2 = minNumberFlightsPath.begin();
+            int counter2 = 1;
+            while (itr2 != minNumberFlightsPath.end()) {
+                cout << right << setw(7) << counter2++ << ": " << (*itr2)->getCode() << ' ' << (*itr2++)->getName()
+                     << endl;
+            }
         }
 
         cout << "__________________________________________________________________________________________________________________________________\n"

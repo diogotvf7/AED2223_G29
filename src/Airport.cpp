@@ -44,8 +44,20 @@ bool Airport::getToken() const {
     return token;
 }
 
+bool Airport::getToken2() const {
+    return token2;
+}
+
 double Airport::getDistance() const {
     return distance;
+}
+
+int Airport::getNum() const {
+    return num;
+}
+
+int Airport::getLow() const {
+    return low;
 }
 
 Airport *Airport::getPrev() const {
@@ -56,17 +68,30 @@ void Airport::setToken(bool token) {
     this->token = token;
 }
 
+void Airport::setToken2(bool token2) {
+    this->token2 = token2;
+}
+
 void Airport::setDistance(double distance) {
     this->distance = distance;
+}
+
+void Airport::setNum(int num) {
+    this->num = num;
+}
+
+void Airport::setLow(int low) {
+    this->low = low;
+}
+
+void Airport::setPrev(Airport *prev) {
+    this->prev = prev;
 }
 
 void Airport::addFlight(Flight f) {
     flights.push_back(f);
 }
 
-void Airport::setPrev(Airport *prev) {
-    this->prev = prev;
-}
 
 
 
