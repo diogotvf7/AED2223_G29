@@ -7,12 +7,14 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+#include <string>
 #include <list>
 #include <vector>
 #include <stack>
+#include <queue>
 #include <unordered_set>
 #include <unordered_map>
-#include <string>
 
 #include "Airline.h"
 #include "Airport.h"
@@ -44,7 +46,7 @@ public:
 
     // Depth-First Search:
     void dfs(const std::string &airport);
-    void listComponent(const std::string &airport, std::vector<std::string> &vairports);
+    void listComponent(const std::string &airport, std::vector<std::string> &vairports, std::list<Airline*> filter = {});
     void articulationAirports(const std::string &airport, int &order, std::list<Airport*> &artAirports);
     void stronglyConnectedComponents(const std::string &airport, std::stack<Airport*> &s, int &order, std::list<std::list<Airport*>> &sccs);
 
@@ -54,7 +56,7 @@ public:
     std::unordered_set<std::string> bfsInNFlights(const std::string &source, int n, int mode);
 
     // Search call functions:
-    std::vector<std::string> reachableAirports(const std::string &source);
+    std::vector<std::string> reachableAirports(const std::string &source, std::list<Airline*> filter = {});
     std::unordered_set<std::string> airportsInNFlights(const std::string &source, int n);
     std::unordered_set<std::string> countriesInNFlights(const std::string &source, int n);
     std::unordered_set<std::string> citiesInNFlights(const std::string &source, int n);

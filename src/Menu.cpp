@@ -195,8 +195,18 @@ bool Menu::airportInfo(Airport *source) {
                 cache.push_back(*itr);
                 itr++;
             }
-            cout << right << setw(20) << to_string(i + 1) + ".   " << right << setw(30)
-                 << cache[i] << endl;
+            if (separator == 0)
+                cout << right << setw(20) << to_string(i + 1) + ".   " << right << setw(30)
+                     << dm->getAirports()[cache[i]]->getCode() << ' ' << dm->getAirports()[cache[i]]->getName() << endl;
+            if (separator == 1)
+                cout << right << setw(20) << to_string(i + 1) + ".   " << right << setw(60)
+                     << dm->getCountries()[cache[i]]->getName() << " : " << dm->getCountries()[cache[i]]->getAirports().size() << " airport(s)" << endl;
+            if (separator == 2)
+                cout << right << setw(20) << to_string(i + 1) + ".   " << right << setw(60)
+                     << dm->getCities()[cache[i]]->getName() << " : " << dm->getCities()[cache[i]]->getAirports().size() << " airport(s)" << endl;
+            if (separator == 3)
+                cout << right << setw(20) << to_string(i + 1) + ".   " << right << setw(30)
+                     << dm->getAirlines()[cache[i]]->getCode() << ' ' << dm->getAirlines()[cache[i]]->getName() << endl;
         }
         cout << "__________________________________________________________________________________________________________________________________\n";
         if (separator == 0)
@@ -301,7 +311,8 @@ bool Menu::reachableAirports(Airport *source) {
                  << "|                                           WRITE AN AIRPORT CODE TO SELECT AN AIRPORT                                           |\n"
                  << "|                                                       WRITE W TO MOVE UP                                                       |\n"
                  << "|                                                      WRITE S TO MOVE DOWN                                                      |\n";
-        cout << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
+        cout << "|                                                  WRITE F TO FILTER BY AIRLINE                                                  |\n"
+             << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
              << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
              << "|________________________________________________________________________________________________________________________________|\n\n";
 
@@ -321,6 +332,22 @@ bool Menu::reachableAirports(Airport *source) {
                 break;
             } else if (normalise(input) == "s" && page * 20 + 20 < (int) targets.size()) {
                 page++;
+                break;
+            } else if (normalise(input) == "f") {
+                cout << "   - WRITE ONE OR MORE ARILINE CODES TO FILTER POSSIBLE FLIGHTS\n"
+                        "   - WRITE DONE TO FINISH FILTERING AIRLINES\n"
+                        "   - WRITE CLEAR TO CLEAR ALL AIRLINE FILTERS\n";
+                list<Airline*> filter;
+                while (true) {
+                    cin >> input;
+                    if (normalise(input) == "done") break;
+                    else if (normalise(input) == "clear") filter.clear();
+                    else if (dm->getAirlines().find(input) != dm->getAirlines().end())
+                        filter.push_back(dm->getAirlines()[input]);
+                    else cout << "   - INVALID INPUT" << endl;
+                }
+                targets = fg->reachableAirports(source->getCode(), filter);
+                page = 0;
                 break;
             } else if (normalise(input) == "back")
                 return true;

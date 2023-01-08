@@ -1,9 +1,6 @@
 //
 // Created by diogotvf7 on 29-12-2022.
 //
-#include <vector>
-#include <queue>
-#include <unordered_set>
 #include "FlightGraph.h"
 
 using namespace std;
@@ -38,11 +35,12 @@ void FlightGraph::dfs(const string &airport) {
     }
 }
 
-void FlightGraph::listComponent(const string &airport, vector<string> &vairports) {
+void FlightGraph::listComponent(const string &airport, vector<string> &vairports, list<Airline*> filter) {
     airports[airport]->setToken(true);
     vairports.push_back(airport);
     for (Flight flight : airports[airport]->getFlights()) {
         Airport *ap = flight.getTarget();
+        if (!filter.empty() && find(filter.begin(), filter.end(), flight.getAirline()) == filter.end()) continue;
         if (!ap->getToken())
             listComponent(ap->getCode(), vairports);
     }
@@ -172,7 +170,7 @@ unordered_set<string> FlightGraph::bfsInNFlights(const string &source, int n, in
                 if (mode == 0) ret.insert(target->getCode());
                 if (mode == 1) ret.insert(target->getCountry());
                 if (mode == 2) ret.insert(target->getCity());
-                if (mode == 3) ret.insert(flight.getAirline()->getName());
+                if (mode == 3) ret.insert(flight.getAirline()->getCode());
                 target->setPrev(tmp);
                 target->setToken(true);
                 target->setDistance(tmp->getDistance() + 1);
@@ -186,11 +184,11 @@ unordered_set<string> FlightGraph::bfsInNFlights(const string &source, int n, in
 //
 // Search call functions:
 //
-vector<string> FlightGraph::reachableAirports(const string &source) {
+vector<string> FlightGraph::reachableAirports(const string &source, list<Airline*> filter) {
     vector<string> res;
     for (auto &[name, airport] : airports)
         airports[name]->setToken(false);
-    listComponent(source, res);
+    listComponent(source, res, filter);
     return res;
 }
 
