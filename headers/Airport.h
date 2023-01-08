@@ -27,6 +27,7 @@ class Airport {
     double distance;
     int num;
     int low;
+    int diameter;
     Airport *prev;
 
 public:
@@ -95,6 +96,11 @@ public:
      */
     [[nodiscard]] int getLow() const;
     /**
+     * @brief Get method for the graph traversal diameter field
+     * @return returns the value of the graph traversal diameter field
+     */
+    [[nodiscard]] int getDiameter() const;
+    /**
      * @brief Get method for the graph traversal prev field
      * @return returns the value of the graph traversal prev field
      */
@@ -115,11 +121,6 @@ public:
      */
     void setDistance(double distance);
     /**
-     * @brief Set method for the graph traversal prev field
-     * @param prev the new value that will be assigned to the field prev
-     */
-    void setPrev(Airport *prev);
-    /**
      * @brief Set method for the graph traversal num field
      * @param num the new value that will be assigned to the field num
      */
@@ -129,6 +130,16 @@ public:
      * @param low the new value that will be assigned to the field low
      */
     void setLow(int low);
+    /**
+     * @brief Set method for the graph traversal diameter field
+     * @param diameter the new value that will be assigned to the field diameter
+     */
+    void setDiameter(int diameter);
+    /**
+     * @brief Set method for the graph traversal prev field
+     * @param prev the new value that will be assigned to the field prev
+     */
+    void setPrev(Airport *prev);
     /**
      * @brief This function is used to add a Flight to the Airport's Flight list
      * @param f the Flight to be added

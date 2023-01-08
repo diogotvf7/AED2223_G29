@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Flight Graph: FlightGraph Class Reference</title>
+<title>Flights Graph: FlightGraph Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Flight Graph
+   <div id="projectname">Flights Graph
    </div>
   </td>
  </tr>
@@ -167,6 +167,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aef324eafe5c1e576cddc476ba256f655"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::list&lt; <a class="el" href="class_airport.html">Airport</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flight_graph.html#aef324eafe5c1e576cddc476ba256f655">getStronglyConnectedComponents</a> ()</td></tr>
 <tr class="memdesc:aef324eafe5c1e576cddc476ba256f655"><td class="mdescLeft">&#160;</td><td class="mdescRight">This functions calls stronglyConnectedComponents for every unvisited <a class="el" href="class_airport.html">Airport</a>.  <a href="class_flight_graph.html#aef324eafe5c1e576cddc476ba256f655">More...</a><br /></td></tr>
 <tr class="separator:aef324eafe5c1e576cddc476ba256f655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfc38dc8752131604fef529bcd196cd2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flight_graph.html#acfc38dc8752131604fef529bcd196cd2">getDiameter</a> (std::list&lt; <a class="el" href="class_airport.html">Airport</a> * &gt; &amp;personalizedAirports)</td></tr>
+<tr class="memdesc:acfc38dc8752131604fef529bcd196cd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function calculates the diameter of the list provided in the first argument. If this argument is empty it provides the diameter of the entire graph.  <a href="class_flight_graph.html#acfc38dc8752131604fef529bcd196cd2">More...</a><br /></td></tr>
+<tr class="separator:acfc38dc8752131604fef529bcd196cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fdc4335e31e4a7395b8fa0e028d04db"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="class_airport.html">Airport</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flight_graph.html#a0fdc4335e31e4a7395b8fa0e028d04db">path</a> (<a class="el" href="class_airport.html">Airport</a> *source, <a class="el" href="class_airport.html">Airport</a> *target)</td></tr>
 <tr class="memdesc:a0fdc4335e31e4a7395b8fa0e028d04db"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function can be used to extract the path made from an <a class="el" href="class_airport.html">Airport</a> {source} to an <a class="el" href="class_airport.html">Airport</a> {target}.  <a href="class_flight_graph.html#a0fdc4335e31e4a7395b8fa0e028d04db">More...</a><br /></td></tr>
 <tr class="separator:a0fdc4335e31e4a7395b8fa0e028d04db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -604,6 +607,33 @@ Public Member Functions</h2></td></tr>
 
 <p>This function calls articulationAirports. </p>
 <dl class="section return"><dt>Returns</dt><dd>returns a list with all the articulation Airports in the graph </dd></dl>
+
+</div>
+</div>
+<a id="acfc38dc8752131604fef529bcd196cd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfc38dc8752131604fef529bcd196cd2">&#9670;&nbsp;</a></span>getDiameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double FlightGraph::getDiameter </td>
+          <td>(</td>
+          <td class="paramtype">std::list&lt; <a class="el" href="class_airport.html">Airport</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>personalizedAirports</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function calculates the diameter of the list provided in the first argument. If this argument is empty it provides the diameter of the entire graph. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">personalizedAirports</td><td>this parameter allows a list of airports to be the target of this operation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the diameter of the intended component / of the entire graph </dd></dl>
 
 </div>
 </div>

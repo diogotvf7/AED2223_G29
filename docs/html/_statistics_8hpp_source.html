@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Flight Graph: Statistics.hpp Source File</title>
+<title>Flights Graph: Statistics.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Flight Graph
+   <div id="projectname">Flights Graph
    </div>
   </td>
  </tr>
@@ -101,39 +101,50 @@ $(function() {
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> stronglyConnectedComponents() {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> stronglyConnectedComponentsPlusDiameter() {</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        cout &lt;&lt; setw(65) &lt;&lt; right &lt;&lt; <span class="stringliteral">&quot;Strongly Connected Components:\n&quot;</span>;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        cout &lt;&lt; setw(65) &lt;&lt; right &lt;&lt; <span class="stringliteral">&quot;______________________________\n&quot;</span>;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        list&lt;list&lt;Airport*&gt;&gt; sccs = dm-&gt;<a class="code" href="class_data_manager.html#acfb344457030cf74fb2aa59eb021bb9b">getFlightsGraph</a>()-&gt;<a class="code" href="class_flight_graph.html#aef324eafe5c1e576cddc476ba256f655">getStronglyConnectedComponents</a>();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">auto</span> itr1 = sccs.begin(); <span class="keywordtype">int</span> i = 1;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">while</span> (itr1 != sccs.end()) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;\n\nSCC &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;:    &quot;</span> &lt;&lt; itr1-&gt;size() &lt;&lt; <span class="stringliteral">&quot; airports\n&quot;</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keyword">auto</span> itr2 = itr1-&gt;begin(); <span class="keywordtype">int</span> j = 1;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">while</span> (itr2 != itr1-&gt;end()) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keywordflow">if</span> (j % 20 == 0) cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                cout &lt;&lt; (*itr2)-&gt;getCode() &lt;&lt; <span class="charliteral">&#39; &#39;</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                itr2++; j++;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            itr1++; i++;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> runStatistics() {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;\n_____________________________________________________\n&quot;</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        articulationAirports();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        stronglyConnectedComponents();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;\n_____________________________________________________\n&quot;</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;WRITE SOMETHING TO GO BACK&quot;</span>; <span class="keywordtype">string</span> _; cin &gt;&gt; _;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    };</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        list&lt;Airport*&gt; biggestComponent; <span class="keywordtype">int</span> maxSize = 0;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">auto</span> itr1 = sccs.begin(); <span class="keywordtype">int</span> i = 1;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">while</span> (itr1 != sccs.end()) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;\n\nSCC &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;:    &quot;</span> &lt;&lt; itr1-&gt;size() &lt;&lt; <span class="stringliteral">&quot; airports\n&quot;</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">if</span> (itr1-&gt;size() &gt; maxSize) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                maxSize = (int) itr1-&gt;size();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                biggestComponent = *itr1;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keyword">auto</span> itr2 = itr1-&gt;begin(); <span class="keywordtype">int</span> j = 1;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">while</span> (itr2 != itr1-&gt;end()) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keywordflow">if</span> (j % 20 == 0) cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                cout &lt;&lt; (*itr2)-&gt;getCode() &lt;&lt; <span class="charliteral">&#39; &#39;</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                itr2++; j++;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            itr1++; i++;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;Do you want to calcualte the diameter of the main component? This operation takes a lot of time. (yes/no): &quot;</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">string</span> _; cin &gt;&gt; _;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> (_ != <span class="stringliteral">&quot;yes&quot;</span>) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        cout &lt;&lt; setw(65) &lt;&lt; right &lt;&lt; <span class="stringliteral">&quot;The diameter of the main component is: &quot;</span> &lt;&lt; dm-&gt;<a class="code" href="class_data_manager.html#acfb344457030cf74fb2aa59eb021bb9b">getFlightsGraph</a>()-&gt;<a class="code" href="class_flight_graph.html#acfc38dc8752131604fef529bcd196cd2">getDiameter</a>(biggestComponent);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        cout &lt;&lt; setw(65) &lt;&lt; right &lt;&lt; <span class="stringliteral">&quot;\n_____________________________________________\n&quot;</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> runStatistics() {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;\n_____________________________________________________\n&quot;</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        articulationAirports();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        stronglyConnectedComponentsPlusDiameter();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;\n_____________________________________________________\n&quot;</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;WRITE SOMETHING TO GO BACK&quot;</span>; <span class="keywordtype">string</span> _; cin &gt;&gt; _;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    };</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
 <div class="ttc" id="aclass_data_manager_html"><div class="ttname"><a href="class_data_manager.html">DataManager</a></div><div class="ttdef"><b>Definition:</b> DataManager.h:24</div></div>
 <div class="ttc" id="aclass_data_manager_html_acfb344457030cf74fb2aa59eb021bb9b"><div class="ttname"><a href="class_data_manager.html#acfb344457030cf74fb2aa59eb021bb9b">DataManager::getFlightsGraph</a></div><div class="ttdeci">FlightGraph * getFlightsGraph() const</div><div class="ttdoc">Get method for the DataManager's FlightGraph.</div><div class="ttdef"><b>Definition:</b> DataManager.cpp:107</div></div>
-<div class="ttc" id="aclass_flight_graph_html_a34587f0774cc54d6a7084eab8c139dc9"><div class="ttname"><a href="class_flight_graph.html#a34587f0774cc54d6a7084eab8c139dc9">FlightGraph::getArticulationAirports</a></div><div class="ttdeci">std::list&lt; Airport * &gt; getArticulationAirports()</div><div class="ttdoc">This function calls articulationAirports.</div><div class="ttdef"><b>Definition:</b> FlightGraph.cpp:403</div></div>
-<div class="ttc" id="aclass_flight_graph_html_aef324eafe5c1e576cddc476ba256f655"><div class="ttname"><a href="class_flight_graph.html#aef324eafe5c1e576cddc476ba256f655">FlightGraph::getStronglyConnectedComponents</a></div><div class="ttdeci">std::list&lt; std::list&lt; Airport * &gt; &gt; getStronglyConnectedComponents()</div><div class="ttdoc">This functions calls stronglyConnectedComponents for every unvisited Airport.</div><div class="ttdef"><b>Definition:</b> FlightGraph.cpp:417</div></div>
+<div class="ttc" id="aclass_flight_graph_html_a34587f0774cc54d6a7084eab8c139dc9"><div class="ttname"><a href="class_flight_graph.html#a34587f0774cc54d6a7084eab8c139dc9">FlightGraph::getArticulationAirports</a></div><div class="ttdeci">std::list&lt; Airport * &gt; getArticulationAirports()</div><div class="ttdoc">This function calls articulationAirports.</div><div class="ttdef"><b>Definition:</b> FlightGraph.cpp:404</div></div>
+<div class="ttc" id="aclass_flight_graph_html_acfc38dc8752131604fef529bcd196cd2"><div class="ttname"><a href="class_flight_graph.html#acfc38dc8752131604fef529bcd196cd2">FlightGraph::getDiameter</a></div><div class="ttdeci">double getDiameter(std::list&lt; Airport * &gt; &amp;personalizedAirports)</div><div class="ttdoc">This function calculates the diameter of the list provided in the first argument. If this argument is...</div><div class="ttdef"><b>Definition:</b> FlightGraph.cpp:435</div></div>
+<div class="ttc" id="aclass_flight_graph_html_aef324eafe5c1e576cddc476ba256f655"><div class="ttname"><a href="class_flight_graph.html#aef324eafe5c1e576cddc476ba256f655">FlightGraph::getStronglyConnectedComponents</a></div><div class="ttdeci">std::list&lt; std::list&lt; Airport * &gt; &gt; getStronglyConnectedComponents()</div><div class="ttdoc">This functions calls stronglyConnectedComponents for every unvisited Airport.</div><div class="ttdef"><b>Definition:</b> FlightGraph.cpp:418</div></div>
 <div class="ttc" id="aclass_statistics_html"><div class="ttname"><a href="class_statistics.html">Statistics</a></div><div class="ttdef"><b>Definition:</b> Statistics.hpp:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

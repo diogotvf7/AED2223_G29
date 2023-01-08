@@ -118,6 +118,7 @@ void FlightGraph::countFlights(const string &source) {
                 target->setPrev(tmp);
                 target->setToken(true);
                 target->setDistance(tmp->getDistance() + 1);
+                airports[source]->setDiameter(tmp->getDistance() + 1);
                 q.push(target);
             }
         }
@@ -431,6 +432,21 @@ list<list<Airport*>> FlightGraph::getStronglyConnectedComponents() {
     return sccs;
 }
 
+double FlightGraph::getDiameter(list<Airport*> &personalizedAirports) {
+    int diameter = 0;
+    if (personalizedAirports.empty())
+        for (auto &[sourceKey, source] : airports) {
+            countFlights(source->getCode());
+            diameter = max(diameter, airports[source->getCode()]->getDiameter());
+        }
+    else
+        for (Airport *source: personalizedAirports) {
+            countFlights(source->getCode());
+            diameter = max(diameter, airports[source->getCode()]->getDiameter());
+        }
+    return diameter;
+}
+
 list<Airport*> FlightGraph::path(Airport *source, Airport *target) {
     Airport *tmp = target;
     list<Airport*> ret;
@@ -441,6 +457,7 @@ list<Airport*> FlightGraph::path(Airport *source, Airport *target) {
     }
     return ret;
 }
+
 
 
 

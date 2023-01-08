@@ -279,6 +279,12 @@ public:
      */
     std::list<std::list<Airport*>> getStronglyConnectedComponents();
     /**
+     * @brief This function calculates the diameter of the list provided in the first argument. If this argument is empty it provides the diameter of the entire graph
+     * @param personalizedAirports this parameter allows a list of airports to be the target of this operation
+     * @return returns the diameter of the intended component / of the entire graph
+     */
+    double getDiameter(std::list<Airport*> &personalizedAirports);
+    /**
      * @brief This function can be used to extract the path made from an Airport {source} to an Airport {target}
      * @param source a pointer to the source Airport
      * @param target a pointer to the target Airport

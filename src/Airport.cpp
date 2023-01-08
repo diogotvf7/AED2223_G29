@@ -60,6 +60,10 @@ int Airport::getLow() const {
     return low;
 }
 
+int Airport::getDiameter() const {
+    return diameter;
+}
+
 Airport *Airport::getPrev() const {
     return prev;
 }
@@ -84,6 +88,10 @@ void Airport::setLow(int low) {
     this->low = low;
 }
 
+void Airport::setDiameter(int diameter) {
+    this->diameter = diameter;
+}
+
 void Airport::setPrev(Airport *prev) {
     this->prev = prev;
 }
@@ -91,6 +99,7 @@ void Airport::setPrev(Airport *prev) {
 void Airport::addFlight(Flight f) {
     flights.push_back(f);
 }
+
 
 
 
