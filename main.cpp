@@ -8,8 +8,6 @@
 using namespace std;
 
 int main() {
-
-
     int input;
     while (true) {
         cout << "0. Run menu" << endl <<

@@ -7,8 +7,8 @@
 
 #include <fstream>
 #include <sstream>
+#include <list>
 #include <vector>
-#include <set>
 #include <unordered_set>
 #include <unordered_map>
 #include <string>
@@ -16,20 +16,27 @@
 #include "Airline.h"
 #include "Airport.h"
 #include "Flight.h"
+#include "City.h"
+#include "Country.h"
 
 class Airport;
+class Country;
+class City;
 
 typedef std::unordered_map<std::string, Airline*> UMairlines;
 typedef std::unordered_map<std::string, Airport*> UMairports;
+typedef std::unordered_map<std::string, City*> UMcities;
+typedef std::unordered_map<std::string, Country*> UMcountries;
 
 class FlightGraph {
-
     UMairlines airlines;
     UMairports airports;
+    UMcountries countries;
+    UMcities cities;
 
 public:
     // Constructor:
-    FlightGraph(UMairports airports, UMairlines airlines);
+    FlightGraph(UMairports &airports, UMairlines &airlines, UMcountries &countries, UMcities &cities);
 
     // Add flight to airport:
     void addFlight(Airport *source, Airport *target, Airline *airline);
@@ -49,7 +56,22 @@ public:
     std::unordered_set<std::string> countriesInNFlights(const std::string &source, int n);
     std::unordered_set<std::string> citiesInNFlights(const std::string &source, int n);
     std::unordered_set<std::string> airlinesInNFlights(const std::string &source, int n);
-    double minDistance(const std::string &source, const std::string &target, bool mode);
+    double minDistanceCodeCode(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCoordinateCode(Coordinate source, const std::string &target, bool mode, double radius);
+    std::pair<Airport*,Airport*> minDistanceCityCode(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCountryCode(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCodeCoordinate(const std::string &source, Coordinate target, bool mode, double radius);
+    std::pair<Airport*,Airport*> minDistanceCoordinateCoordinate(Coordinate source, Coordinate target, bool mode, double radius);
+    std::pair<Airport*,Airport*> minDistanceCityCoordinate(const std::string &source, Coordinate target, bool mode, double radius);
+    std::pair<Airport*,Airport*> minDistanceCountryCoordinate(const std::string &source, Coordinate target, bool mode, double radius);
+    std::pair<Airport*,Airport*> minDistanceCodeCity(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCoordinateCity(Coordinate source, const std::string &target, bool mode, double radius);
+    std::pair<Airport*,Airport*> minDistanceCityCity(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCountryCity(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCodeCountry(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCoordinateCountry(Coordinate source, const std::string &target, bool mode, double radius);
+    std::pair<Airport*,Airport*> minDistanceCityCountry(const std::string &source, const std::string &target, bool mode);
+    std::pair<Airport*,Airport*> minDistanceCountryCountry(const std::string &source, const std::string &target, bool mode);
     std::list<Airport*> path(Airport *source, Airport *target);
 
 };

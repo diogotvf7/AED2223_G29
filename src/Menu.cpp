@@ -12,11 +12,27 @@ string normalise(const string &s) {
     return lowerS;
 }
 
-bool isNumerical(const string& s) {
-    for (char c : s) {
+bool isNumerical(const string &s) {
+    for (char c : s)
         if (!isdigit(c)) return false;
-    }
     return true;
+}
+
+bool isAlpha(const string &s) {
+    for (char c : s)
+        if (!isalpha(c)) return false;
+    return true;
+}
+
+bool isCoordinate(const string &s) {
+    return regex_match(s, regex("^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$"));
+}
+
+Coordinate getCoordinate(const string &s) {
+    stringstream tmp(s); string latitude, longitude;
+    getline(tmp, latitude, ',');
+    getline(tmp, longitude);
+    return {stod(latitude), stod(longitude)};
 }
 
 Menu::Menu(DataManager *dm) {
@@ -36,6 +52,9 @@ void Menu::run() {
             case 1:
                 airportsMenu();
                 input = "0";
+                break;
+            case 2:
+                input= "0";
                 break;
             case 3:
                 countriesMenu();
@@ -101,8 +120,8 @@ void Menu::airportsMenu() {
                  << airportsCache[i]->getCode() + " " + airportsCache[i]->getName() << endl;
         }
         cout << "__________________________________________________________________________________________________________________________________\n"
-             << "|                                             WRITE A NUMBER TO SEE POSSIBLE TARGETS                                             |\n"
-             << "|                                     WRITE A COUNTRY OR CITY's NAME TO FILTER IT'S AIRPORTS                                     |\n"
+             << "|                                              WRITE A NUMBER TO SELECT AN AIRPORT                                               |\n"
+             << "|                                           WRITE AN AIRPORT CODE TO SELECT AN AIRPORT                                           |\n"
              << "|                                                       WRITE W TO MOVE UP                                                       |\n"
              << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
              << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
@@ -119,18 +138,35 @@ void Menu::airportsMenu() {
                     cin >> input;
                     if (input == "1")
                         alive = airportInfo(airportsCache[stoi(tmp) - 1]);
-                    if (input == "2")
+                    else if (input == "2")
                          alive = reachableAirports(airportsCache[stoi(tmp) - 1]);
+                    else cout << "   - INVALID OPTION" << endl;
                     break;
                 }
                 break;
+            } else if (isAlpha(input) && input.size() == 3) {
+                if (dm->getAirports().find(input) == dm->getAirports().end()) cout << "   - WRONG CODE\n";
+                else {
+                    while (true) {
+                        cout << "   - 1. Display airport info" << endl
+                             << "   - 2. Display possible targets" << endl;
+                        cin >> input;
+                        if (input == "1")
+                            alive = airportInfo(dm->getAirports()[tmp]);
+                        else if (input == "2")
+                            alive = reachableAirports(dm->getAirports()[tmp]);
+                        else cout << "   - INVALID OPTION" << endl;
+                        break;
+                    }
+                    break;
+                }
             } else if (normalise(input) == "w" && page * 20 - 20 >= 0) {
                 page--;
                 break;
             } else if (normalise(input) == "s" && page * 20 + 20 < (int) airport.size()) {
                 page++;
                 break;
-            } else if (normalise(input) == "menu")
+            } else if (normalise(input) == "menu" || normalise(input) == "back")
                 return;
             else cout << "   - INVALID OPTION" << endl;
         }
@@ -140,7 +176,7 @@ void Menu::airportsMenu() {
 bool Menu::airportInfo(Airport *source) {
     bool alive = true;
     int page = 0;
-    int mode = 0, gap = 3;
+    int separator = 0, gap = 3;
     unordered_set<string> targets = dm->getFlightsGraph()->airportsInNFlights(source->getCode(), gap);
     auto itr = targets.begin();
     vector<string> cache;
@@ -149,10 +185,10 @@ bool Menu::airportInfo(Airport *source) {
         string header = source->getCode() + "   " + source->getName();
         cout << "__________________________________________________________________________________________________________________________________\n"
              << "|" << setw(65 + (int) header.size() / 2) << right << header << setw(65 - (int) header.size() / 2) << right << " |\n";
-        if (mode == 0) cout << "|                                     DISPLAYING POSSIBLE TARGET AIRPORTS IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
-        if (mode == 1) cout << "|                                    DISPLAYING POSSIBLE TARGET COUNTRIES IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
-        if (mode == 2) cout << "|                                       DISPLAYING POSSIBLE TARGET CITIES IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
-        if (mode == 3) cout << "|                                          DISPLAYING POSSIBLE AIRLINES IN " << setw(2) << left << gap << " FLIGHTS                                            |\n";
+        if (separator == 0) cout << "|                                     DISPLAYING POSSIBLE TARGET AIRPORTS IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
+        if (separator == 1) cout << "|                                    DISPLAYING POSSIBLE TARGET COUNTRIES IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
+        if (separator == 2) cout << "|                                       DISPLAYING POSSIBLE TARGET CITIES IN " << setw(2) << left << gap << " FLIGHTS                                          |\n";
+        if (separator == 3) cout << "|                                          DISPLAYING POSSIBLE AIRLINES IN " << setw(2) << left << gap << " FLIGHTS                                            |\n";
         cout << "|                                                THERE ARE "<< setw(4) << right << targets.size() << " POSSIBLE OPTIONS                                                 |\n" <<
                 "|________________________________________________________________________________________________________________________________|\n";
         for (int i = page * 20; i < min(page * 20 + 20, (int) targets.size()); i++) {
@@ -164,16 +200,16 @@ bool Menu::airportInfo(Airport *source) {
                  << cache[i] << endl;
         }
         cout << "__________________________________________________________________________________________________________________________________\n";
-        if (mode == 0)
+        if (separator == 0)
             cout << "|                                                WRITE A NUMBER TO GO TO FLIGHT MENU                                             |\n";
-        if (mode == 1)
+        if (separator == 1)
             cout << "|                                                WRITE A NUMBER TO GO TO COUNTRY MENU                                            |\n";
-        if (mode == 2)
+        if (separator == 2)
             cout << "|                                                 WRITE A NUMBER TO GO TO CITY MENU                                              |\n";
         cout << "|                                                 WRITE W OR S TO MOVE UP OR DOWN                                                |\n";
-        if (mode == 0) cout << "|                                                   WRITE D TO GO TO NEXT MODE                                                   |\n";
-        else if (mode == 1 || mode == 2) cout << "|                                           WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                                          |\n";
-        else if (mode == 3) cout << "|                                                 WRITE A TO GO TO PREVIOUS MODE                                                 |\n";
+        if (separator == 0) cout << "|                                                   WRITE D TO GO TO NEXT MODE                                                   |\n";
+        else if (separator == 1 || separator == 2) cout << "|                                           WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                                          |\n";
+        else if (separator == 3) cout << "|                                                 WRITE A TO GO TO PREVIOUS MODE                                                 |\n";
         if (gap == 1) cout << "|                                                WRITE U TO INCREASE MAX FLIGHTS                                                |\n";
         if (1 < gap && gap < 9) cout << "|                                        WRITE U OR J TO INCREASE OR DECREASE MAX FLIGHTS                                        |\n";
         if (gap == 9) cout << "|                                                WRITE J TO DECREASE MAX FLIGHTS                                                |\n";
@@ -184,12 +220,12 @@ bool Menu::airportInfo(Airport *source) {
         while (true) {
 
             cout << "   - OPTION: "; cin >> input;
-            if (mode < 3 && isNumerical(input) && page * 20 + 1 <= stoi(input) && stoi(input) <= min(page * 20 + 20, (int) targets.size() - 1)) {
-                if (mode == 0)
+            if (separator < 3 && isNumerical(input) && page * 20 + 1 <= stoi(input) && stoi(input) <= min(page * 20 + 20, (int) targets.size() - 1)) {
+                if (separator == 0)
                     alive = flightInfo(source, dm->getAirports()[cache[stoi(input) - 1]]);
-                else if (mode == 1)
+                else if (separator == 1)
                     alive = countryInfo(dm->getCountries()[cache[stoi(input) - 1]]);
-                else if (mode == 2)
+                else if (separator == 2)
                     alive = cityInfo(dm->getCities()[cache[stoi(input) - 1]]);
                 break;
             } else if (normalise(input) == "w" && page * 20 - 20 >= 0) {
@@ -198,34 +234,34 @@ bool Menu::airportInfo(Airport *source) {
             } else if (normalise(input) == "s" && page * 20 + 20 < (int) targets.size() - 1) {
                 page++;
                 break;
-            } else if (normalise(input) == "a" && mode > 0) {
+            } else if (normalise(input) == "a" && separator > 0) {
                 page = 0;
-                if (mode == 1) targets = dm->getFlightsGraph()->airportsInNFlights(source->getCode(), gap);
-                if (mode == 2) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
-                if (mode == 3) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
-                itr = targets.begin(); cache.clear(); mode--;
+                if (separator == 1) targets = dm->getFlightsGraph()->airportsInNFlights(source->getCode(), gap);
+                if (separator == 2) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
+                if (separator == 3) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
+                itr = targets.begin(); cache.clear(); separator--;
                 break;
-            } else if (normalise(input) == "d" && mode < 3) {
+            } else if (normalise(input) == "d" && separator < 3) {
                 page = 0;
-                if (mode == 0) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
-                if (mode == 1) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
-                if (mode == 2) targets = dm->getFlightsGraph()->airlinesInNFlights(source->getCode(), gap);
-                itr = targets.begin(); cache.clear(); mode++;
+                if (separator == 0) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
+                if (separator == 1) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
+                if (separator == 2) targets = dm->getFlightsGraph()->airlinesInNFlights(source->getCode(), gap);
+                itr = targets.begin(); cache.clear(); separator++;
                 break;
             } else if (normalise(input) == "u" && 1 <= gap && gap < 9) {
                 page = 0; gap++;
-                if (mode == 0) targets = dm->getFlightsGraph()->airportsInNFlights(source->getCode(), gap);
-                if (mode == 1) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
-                if (mode == 2) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
-                if (mode == 3) targets = dm->getFlightsGraph()->airlinesInNFlights(source->getCode(), gap);
+                if (separator == 0) targets = dm->getFlightsGraph()->airportsInNFlights(source->getCode(), gap);
+                if (separator == 1) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
+                if (separator == 2) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
+                if (separator == 3) targets = dm->getFlightsGraph()->airlinesInNFlights(source->getCode(), gap);
                 itr = targets.begin(); cache.clear();
                 break;
             } else if (normalise(input) == "j" && 1 < gap && gap <= 9) {
                 page = 0; gap--;
-                if (mode == 0) targets = dm->getFlightsGraph()->airportsInNFlights(source->getCode(), gap);
-                if (mode == 1) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
-                if (mode == 2) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
-                if (mode == 3) targets = dm->getFlightsGraph()->airlinesInNFlights(source->getCode(), gap);
+                if (separator == 0) targets = dm->getFlightsGraph()->airportsInNFlights(source->getCode(), gap);
+                if (separator == 1) targets = dm->getFlightsGraph()->countriesInNFlights(source->getCode(), gap);
+                if (separator == 2) targets = dm->getFlightsGraph()->citiesInNFlights(source->getCode(), gap);
+                if (separator == 3) targets = dm->getFlightsGraph()->airlinesInNFlights(source->getCode(), gap);
                 itr = targets.begin(); cache.clear();
                 break;
             } else if (normalise(input) == "back")
@@ -258,8 +294,8 @@ bool Menu::reachableAirports(Airport *source) {
             cout << endl;
         }
         cout << "__________________________________________________________________________________________________________________________________\n"
-             << "|                                               WRITE A NUMBER TO SEE AIRPORT MENU                                               |\n"
-             << "|                                      WRITE A COUNTRY OR CITY's NAME TO SEE IT'S AIRPORTS                                       |\n"
+             << "|                                              WRITE A NUMBER TO SELECT AN AIRPORT                                               |\n"
+             << "|                                           WRITE AN AIRPORT CODE TO SELECT AN AIRPORT                                           |\n"
              << "|                                                       WRITE W TO MOVE UP                                                       |\n"
              << "|                                                      WRITE S TO MOVE DOWN                                                      |\n"
              << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
@@ -271,6 +307,10 @@ bool Menu::reachableAirports(Airport *source) {
             cout << "   - OPTION: "; cin >> input;
             if (isNumerical(input) && page * 20 + 1 <= stoi(input) && stoi(input) <= min(page * 20 + 20, (int) targets.size())) {
                 alive = flightInfo(source, airports[targets[stoi(input)]]);
+                break;
+            } else if (isAlpha(input) && input.size() == 3) {
+                if (dm->getAirports().find(input) == dm->getAirports().end()) cout << "   - WRONG CODE";
+                else alive = flightInfo(source, dm->getAirports()[input]);
                 break;
             } else if (normalise(input) == "w" && page * 20 - 20 >= 0) {
                 page--;
@@ -289,9 +329,9 @@ bool Menu::reachableAirports(Airport *source) {
 }
 
 bool Menu::flightInfo(Airport *source, Airport *target) {
-    double minDistance = dm->getFlightsGraph()->minDistance(source->getCode(), target->getCode(), false);
+    double minDistance = dm->getFlightsGraph()->minDistanceCodeCode(source->getCode(), target->getCode(), false);
     list<Airport*> minDistancePath = dm->getFlightsGraph()->path(source, target);
-    double minNumberFlights = dm->getFlightsGraph()->minDistance(source->getCode(), target->getCode(), true);
+    double minNumberFlights = dm->getFlightsGraph()->minDistanceCodeCode(source->getCode(), target->getCode(), true);
     list<Airport*> minNumberFlightsPath = dm->getFlightsGraph()->path(source, target);
 
     bool alive = true;
@@ -391,39 +431,39 @@ bool Menu::countryInfo(Country *country) {
     vector<City*> cities = country->getCities();
     vector<Airline*> airlines = country->getAirlines();
     vector<Airport*> airports = country->getAirports();
-    int mode = 0;
+    int separator = 0;
     while (alive) {
         cleanTerminal();
         string header = country->getName();
         cout << "__________________________________________________________________________________________________________________________________\n"
              << "|" << setw(65 + (int) header.size() / 2) << right << header << setw(65 - (int) header.size() / 2) << right << " |\n";
-        if (mode == 0) cout << "|                                                      DISPLAYING CITIES                                                         |\n";
-        else if (mode == 1) cout << "|                                                     DISPLAYING AIRLINES                                                        |\n";
-        else if (mode == 2) cout << "|                                                     DISPLAYING AIRPORTS                                                        |\n";
+        if (separator == 0) cout << "|                                                      DISPLAYING CITIES                                                         |\n";
+        else if (separator == 1) cout << "|                                                     DISPLAYING AIRLINES                                                        |\n";
+        else if (separator == 2) cout << "|                                                     DISPLAYING AIRPORTS                                                        |\n";
         cout << "|________________________________________________________________________________________________________________________________|\n";
 
-        int maxIndex = (int) cities.size() * (mode == 0) + (int) airlines.size() * (mode == 1) + (int) airports.size() * (mode == 2);
+        int maxIndex = (int) cities.size() * (separator == 0) + (int) airlines.size() * (separator == 1) + (int) airports.size() * (separator == 2);
         for (int i = page * 20; i < min(page * 20 + 20, maxIndex); i++) {
-            if (mode == 0)
+            if (separator == 0)
                 cout << right << setw(20) << to_string(i + 1) + ".   " << right << setw(30)
                      << cities[i]->getName() << " : " << cities[i]->getAirports().size() << " airports;" << endl;
-            else if (mode == 1)
+            else if (separator == 1)
                 cout << right << setw(30) << to_string(i + 1) + ".   " << left << setw(30)
                      << airlines[i]->getName() << endl;
-            else if (mode == 2)
+            else if (separator == 2)
                 cout << right << setw(5) << to_string(i + 1) + ".   " << left << setw(30)
                      << airports[i]->getCode() << ' ' << setw(60) << left << airports[i]->getName() << airports[i]->getCoordinate() << endl;
 
         }
         cout << "__________________________________________________________________________________________________________________________________\n";
-        if (mode == 0)
+        if (separator == 0)
             cout << "|                                                WRITE A NUMBER TO GO TO CITY MENU                                               |\n";
-        if (mode == 2)
+        if (separator == 2)
             cout << "|                                               WRITE A NUMBER TO GO TO AIRPORT MENU                                             |\n";
         cout << "|                                                 WRITE W OR S TO MOVE UP OR DOWN                                                |\n";
-        if (mode == 0) cout << "|                                                   WRITE D TO GO TO NEXT MODE                                                   |\n";
-        if (mode == 1) cout << "|                                           WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                                          |\n";
-        if (mode == 2) cout << "|                                                 WRITE A TO GO TO PREVIOUS MODE                                                 |\n";
+        if (separator == 0) cout << "|                                                   WRITE D TO GO TO NEXT MODE                                                   |\n";
+        if (separator == 1) cout << "|                                           WRITE A OR D TO GO TO PREVIOUS OR NEXT MODE                                          |\n";
+        if (separator == 2) cout << "|                                                 WRITE A TO GO TO PREVIOUS MODE                                                 |\n";
         cout << "|                                             WRITE BACK TO GO TO THE PREVIOUS MENU                                              |\n"
              << "|                                               WRITE MENU TO GO TO THE MAIN MENU                                                |\n"
              << "|________________________________________________________________________________________________________________________________|\n\n";
@@ -431,8 +471,8 @@ bool Menu::countryInfo(Country *country) {
         while (true) {
 
             cout << "   - OPTION: "; cin >> input;
-            if ((mode == 0 || mode == 2) && isNumerical(input) && page * 21 <= stoi(input) && stoi(input) <= min(page * 20 + 20, maxIndex)) {
-                if (mode == 0)
+            if ((separator == 0 || separator == 2) && isNumerical(input) && page * 21 <= stoi(input) && stoi(input) <= min(page * 20 + 20, maxIndex)) {
+                if (separator == 0)
                     alive = cityInfo(dm->getCities()[cities[stoi(input) - 1]->getName()]);
                 else
                     alive = reachableAirports(dm->getAirports()[airports[stoi(input) - 1]->getCode()]);
@@ -443,15 +483,15 @@ bool Menu::countryInfo(Country *country) {
             } else if (normalise(input) == "s" && page * 20 + 20 < (int) maxIndex - 1) {
                 page++;
                 break;
-            } else if (normalise(input) == "a" && mode > 0) {
+            } else if (normalise(input) == "a" && separator > 0) {
                 page = 0;
-                if (mode == 2 && airlines.empty()) mode--;
-                mode--;
+                if (separator == 2 && airlines.empty()) separator--;
+                separator--;
                 break;
-            } else if (normalise(input) == "d" && mode < 2) {
+            } else if (normalise(input) == "d" && separator < 2) {
                 page = 0;
-                if (mode == 0 && airlines.empty()) mode++;
-                mode++;
+                if (separator == 0 && airlines.empty()) separator++;
+                separator++;
                 break;
             } else if (normalise(input) == "back")
                 return true;
@@ -532,15 +572,16 @@ bool Menu::cityInfo(City *city) {
 
             cout << "   - OPTION: ";
             cin >> input;
+            string tmp = input;
             if (isNumerical(input) && 1 <= stoi(input) && stoi(input) <= city->getAirports().size()) {
                 while (true) {
                     cout << "   - 1. Display airport info" << endl
                          << "   - 2. Display possible targets" << endl;
                     cin >> input;
                     if (input == "1")
-                        alive = airportInfo(city->getAirports()[stoi(input) - 1]);
+                        alive = airportInfo(city->getAirports()[stoi(tmp) - 1]);
                     if (input == "2")
-                        alive = reachableAirports(city->getAirports()[stoi(input) - 1]);
+                        alive = reachableAirports(city->getAirports()[stoi(tmp) - 1]);
                     break;
                 }
                 break;
@@ -556,42 +597,193 @@ bool Menu::cityInfo(City *city) {
 
 void Menu::fastSearchMenu() {
     cleanTerminal();
-    Airport *source = nullptr;
-    Airport *target = nullptr;
+    Airport *sourceCode = nullptr;
+    Airport *targetCode = nullptr;
+    Coordinate sourceCoordinate;
+    Coordinate targetCoordinate;
+    Country *sourceCountry = nullptr;
+    Country *targetCountry = nullptr;
+    City *sourceCity = nullptr;
+    City *targetCity = nullptr;
     bool alive = true;
 
     while (alive) {
         cleanTerminal();
         cout << "__________________________________________________________________________________________________________________________________\n"
              << "|                                                        Fast search menu                                                        |\n"
-             << "|                                Write the code of two airports to be your source and destination                                |\n"
+             << "|################################################################################################################################|\n"
+             << "|################################################################################################################################|\n"
+             << "|#   0. CODE - CODE             ##   1. COORDINATE - CODE       ##   2. CITY - CODE             ##   3. COUNTRY - CODE          #|\n"
+             << "|#   4. CODE - COORDINATE       ##   5. COORDINATE - COORDINATE ##   6. CITY - COORDINATE       ##   7. COUNTRY - COORDINATE    #|\n"
+             << "|#   8. CODE - CITY             ##   9. COORDINATE - CITY       ##  10. CITY - CITY             ##  11. COUNTRY - CITY          #|\n"
+             << "|#  12. CODE - COUNTRY          ##  13. COORDINATE - COUNTRY    ##  14. CITY - COUNTRY          ##  15. COUNTRY - COUNTRY       #|\n"
+             << "|################################################################################################################################|\n"
+             << "| COORDINATE EXAMPLE - '1.0000000,-12.0000000'                                                      16. EXIT                     |\n"
              << "|________________________________________________________________________________________________________________________________|\n\n\n\n";
+        int option, radius; bool mode;
         while (true) {
-            cout << right << setw(20) << "Source: "; cin >> input; cout << endl;
-            if (dm->getAirports().find(input) != dm->getAirports().end()) {
-                source = dm->getAirports()[input];
+            cout << "   - OPTION: ";
+            cin >> input;
+            if (isNumerical(input) && 0 <= stoi(input) && stoi(input) <= 16) {
+                option = stoi(input);
                 break;
             }
-            else
-                cout << right << setw(20) << "Invalid code!";
+            else cout << "   - INVALID OPTION" << endl;
         }
-        vector<string> validOptions = dm->getFlightsGraph()->reachableAirports(source->getCode());
+        if (input == "16") break;
         while (true) {
-            cout << right << setw(20) << "Target: "; cin >> input; cout << endl;
-            if (dm->getAirports().find(input) != dm->getAirports().end() && find(validOptions.begin(), validOptions.end(), input) != validOptions.end()) {
-                target= dm->getAirports()[input];
+            cout << "     Choose your preference:" << endl
+                 << "   - 1. Minimum number of flights" << endl
+                 << "   - 2. Minimum distance" << endl;
+            cout << "   :"; cin >> input;
+            if (input == "1") {mode = true; break;}
+            else if (input == "2") {mode = false; break;}
+            else cout << "   - INVALID OPTION" << endl;
+        }
+        if (option % 4 == 1 || option / 4 == 1)
+            while (true) {
+                cout << "     Insert a radius (integer in km): ";
+                cin >> input;
+                if (isNumerical(input)) {
+                    radius = stoi(input);
+                    break;
+                }
+                else cout << "   - INVALID OPTION" << endl;
+
+            }
+        while (true) {
+
+            cout << right << setw(20) << "Source: "; getline(cin >> ws, input); cout << endl;
+            if (option % 4 == 0 && dm->getAirports().find(input) != dm->getAirports().end()) {
+                sourceCode = dm->getAirports()[input];
                 break;
             }
-            else
-                cout << right << setw(20) << "Invalid code!";
+            if (option % 4 == 1 && isCoordinate(input)) {
+                sourceCoordinate = getCoordinate(input);
+                break;
+            }
+            if (option % 4 == 2 && dm->getCities().find(input) != dm->getCities().end()) {
+                sourceCity = dm->getCities()[input];
+                break;
+            }
+            if (option % 4 == 3 && dm->getCountries().find(input) != dm->getCountries().end()) {
+                sourceCountry = dm->getCountries()[input];
+                break;
+            }
+            else cout << right << setw(20) << "Invalid input!\n";
         }
-        alive = flightInfo(source, target);
+        while (true) {
+            cout << right << setw(20) << "Target: "; getline(cin >> ws, input); cout << endl;
+            if (option / 4 == 0 && dm->getAirports().find(input) != dm->getAirports().end()) {
+                targetCode = dm->getAirports()[input];
+                break;
+            }
+            if (option / 4 == 1 && isCoordinate(input)) {
+                targetCoordinate = getCoordinate(input);
+                break;
+            }
+            if (option / 4 == 2 && dm->getCities().find(input) != dm->getCities().end()) {
+                targetCity = dm->getCities()[input];
+                break;
+            }
+            if (option / 4 == 3 && dm->getCountries().find(input) != dm->getCountries().end()) {
+                targetCountry = dm->getCountries()[input];
+                break;
+            }
+            else cout << right << setw(20) << "Invalid input!\n";
+        }
+
+        switch (option) {
+            case 0: {
+                alive = flightInfo(sourceCode, targetCode);
+                break;
+            }
+            case 1: {
+                auto p = dm->getFlightsGraph()->minDistanceCoordinateCode(sourceCoordinate, targetCode->getCode(), mode, radius);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 2: {
+                auto p = dm->getFlightsGraph()->minDistanceCityCode(sourceCity->getName(), targetCode->getCode(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 3: {
+                auto p = dm->getFlightsGraph()->minDistanceCountryCode(sourceCountry->getName(), targetCode->getCode(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 4: {
+                auto p = dm->getFlightsGraph()->minDistanceCodeCoordinate(sourceCode->getCode(), targetCoordinate, mode, radius);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 5: {
+                auto p = dm->getFlightsGraph()->minDistanceCoordinateCoordinate(sourceCoordinate, targetCoordinate, mode, radius);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 6: {
+                auto p = dm->getFlightsGraph()->minDistanceCityCoordinate(sourceCity->getName(), targetCoordinate, mode, radius);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 7: {
+                auto p = dm->getFlightsGraph()->minDistanceCountryCoordinate(sourceCountry->getName(), targetCoordinate, mode, radius);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 8: {
+                auto p = dm->getFlightsGraph()->minDistanceCodeCity(sourceCode->getCode(), targetCity->getName(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 9: {
+                auto p = dm->getFlightsGraph()->minDistanceCoordinateCity(sourceCoordinate, targetCity->getName(), mode, radius);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 10: {
+                auto p = dm->getFlightsGraph()->minDistanceCityCity(sourceCity->getName(), targetCity->getName(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 11: {
+                auto p = dm->getFlightsGraph()->minDistanceCountryCity(sourceCountry->getName(), targetCity->getName(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 12: {
+                auto p = dm->getFlightsGraph()->minDistanceCodeCountry(sourceCode->getCode(), targetCountry->getName(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 13: {
+                auto p = dm->getFlightsGraph()->minDistanceCoordinateCountry(sourceCoordinate, targetCountry->getName(), mode, radius);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 14: {
+                auto p = dm->getFlightsGraph()->minDistanceCityCountry(sourceCity->getName(), targetCountry->getName(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 15: {
+                auto p = dm->getFlightsGraph()->minDistanceCountryCountry(sourceCountry->getName(), targetCountry->getName(), mode);
+                alive = flightInfo(p.first, p.second);
+                break;
+            }
+            case 16:
+                alive = false;
+                break;
+        }
     }
 }
 
 void Menu::cleanTerminal() {
     cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
+
 
 
 

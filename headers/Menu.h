@@ -8,6 +8,8 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include <regex>
+#include <sstream>
 
 #include <vector>
 #include <string>
@@ -34,7 +36,6 @@ public:
     void fastSearchMenu();
 
     void cleanTerminal();
-
 };
 
 

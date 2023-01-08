@@ -5,16 +5,17 @@
 #include <queue>
 #include <unordered_set>
 #include "FlightGraph.h"
-#include "../MinMaxStack.hpp"
 
 using namespace std;
 
 //
 // Constructor:
 //
-FlightGraph::FlightGraph(UMairports airports, UMairlines airlines) {
+FlightGraph::FlightGraph(UMairports &airports, UMairlines &airlines, UMcountries &countries, UMcities &cities) {
     this->airports = airports;
     this->airlines = airlines;
+    this->countries = countries;
+    this->cities = cities;
 }
 
 //
@@ -160,16 +161,199 @@ std::unordered_set<std::string> FlightGraph::airlinesInNFlights(const string &so
     return bfsInNFlights(source, n, 3);
 }
 
-double FlightGraph::minDistance(const string &source, const string &target, bool mode) {
+double FlightGraph::minDistanceCodeCode(const string &source, const string &target, bool mode) {
     if (mode)
         countFlights(source);
     else
         dijkstra(source);
-
     return airports[target]->getDistance();
 }
 
-list<Airport *> FlightGraph::path(Airport *source, Airport *target) {
+pair<Airport*,Airport*> FlightGraph::minDistanceCoordinateCode(Coordinate source, const string &target, bool mode, double radius) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (auto &[key1, airport1] : airports) {
+        if (source.distanceTo(airport1->getCoordinate()) < radius) {
+            double tmp = minDistanceCodeCode(airport1->getCode(), airports[target]->getCode(), mode);
+            if (tmp < minimum.first && tmp != -1)
+                minimum = {tmp, {airport1, airports[target]}};
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCityCode(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : cities[source]->getAirports()) {
+        double tmp = minDistanceCodeCode(airport1->getCode(), airports[target]->getCode(), mode);
+        if (tmp < minimum.first && tmp != -1)
+            minimum = {tmp, {airport1, airports[target]}};
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCountryCode(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : countries[source]->getAirports()) {
+        double tmp = minDistanceCodeCode(airport1->getCode(), airports[target]->getCode(), mode);
+        if (tmp < minimum.first && tmp != -1)
+            minimum = {tmp, {airport1, airports[target]}};
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCodeCoordinate(const string &source, Coordinate target, bool mode, double radius) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (auto &[key1, airport2] : airports) {
+        if (target.distanceTo(airport2->getCoordinate()) < radius) {
+            double tmp = minDistanceCodeCode(airports[source]->getCode(), airport2->getCode(), mode);
+            if (tmp < minimum.first && tmp != -1)
+                minimum = {tmp, {airports[source], airport2}};
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCoordinateCoordinate(Coordinate source, Coordinate target, bool mode, double radius) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (auto &[key1, airport1] : airports) {
+        if (source.distanceTo(airport1->getCoordinate()) < radius) {
+            for (auto &[key2, airport2] : airports) {
+                if (target.distanceTo(airport2->getCoordinate()) < radius) {
+                    double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+                    if (tmp < minimum.first && tmp != -1)
+                        minimum = {tmp, {airport1, airport2}};
+                }
+            }
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCityCoordinate(const string &source, Coordinate target, bool mode, double radius) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : cities[source]->getAirports()) {
+        for (auto &[key2, airport2] : airports) {
+            if (target.distanceTo(airport2->getCoordinate()) < radius) {
+                double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+                if (tmp < minimum.first && tmp != -1)
+                    minimum = {tmp, {airport1, airport2}};
+            }
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCountryCoordinate(const string &source, Coordinate target, bool mode, double radius) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : countries[source]->getAirports()) {
+        for (auto &[key2, airport2] : airports) {
+            if (target.distanceTo(airport2->getCoordinate()) < radius) {
+                double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+                if (tmp < minimum.first && tmp != -1)
+                    minimum = {tmp, {airport1, airport2}};
+            }
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCodeCity(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport2 : cities[target]->getAirports()) {
+        double tmp = minDistanceCodeCode(airports[source]->getCode(), airport2->getCode(), mode);
+        if (tmp < minimum.first && tmp != -1)
+            minimum = {tmp, {airports[source], airport2}};
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCoordinateCity(Coordinate source, const string &target, bool mode, double radius) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (auto &[key2, airport1] : airports) {
+        if (source.distanceTo(airport1->getCoordinate()) < radius) {
+            for (Airport *airport2 : cities[target]->getAirports()) {
+                double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+                if (tmp < minimum.first && tmp != -1)
+                    minimum = {tmp, {airport1, airport2}};
+            }
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCityCity(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : cities[source]->getAirports()) {
+        for (Airport *airport2 : cities[target]->getAirports()) {
+            double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+            if (tmp < minimum.first && tmp != -1)
+                minimum = {tmp, {airport1, airport2}};
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCountryCity(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : countries[source]->getAirports()) {
+        for (Airport *airport2 : cities[target]->getAirports()) {
+            double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+            if (tmp < minimum.first && tmp != -1)
+                minimum = {tmp, {airport1, airport2}};
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCodeCountry(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport2 : countries[target]->getAirports()) {
+        double tmp = minDistanceCodeCode(airports[source]->getCode(), airport2->getCode(), mode);
+        if (tmp < minimum.first && tmp != -1)
+            minimum = {tmp, {airports[source], airport2}};
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCoordinateCountry(Coordinate source, const string &target, bool mode, double radius) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (auto &[key2, airport1] : airports) {
+        if (source.distanceTo(airport1->getCoordinate()) < radius) {
+            for (Airport *airport2 : countries[target]->getAirports()) {
+                double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+                if (tmp < minimum.first && tmp != -1)
+                    minimum = {tmp, {airport1, airport2}};
+            }
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCityCountry(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : cities[source]->getAirports()) {
+        for (Airport *airport2 : countries[target]->getAirports()) {
+            double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+            if (tmp < minimum.first && tmp != -1)
+                minimum = {tmp, {airport1, airport2}};
+        }
+    }
+    return minimum.second;
+}
+
+pair<Airport*,Airport*> FlightGraph::minDistanceCountryCountry(const string &source, const string &target, bool mode) {
+    pair<double,pair<Airport*,Airport*>> minimum = {40075.017, {}};
+    for (Airport *airport1 : countries[source]->getAirports()) {
+        for (Airport *airport2 : countries[target]->getAirports()) {
+            double tmp = minDistanceCodeCode(airport1->getCode(), airport2->getCode(), mode);
+            if (tmp < minimum.first && tmp != -1)
+                minimum = {tmp, {airport1, airport2}};
+        }
+    }
+    return minimum.second;
+}
+
+list<Airport*> FlightGraph::path(Airport *source, Airport *target) {
     Airport *tmp = target;
     list<Airport*> ret;
 

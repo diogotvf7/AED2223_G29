@@ -8,7 +8,6 @@
 
 #include "DataManager.h"
 #include "Coordinate.h"
-#include "MinMaxStack.hpp"
 
 using namespace std;
 
@@ -92,27 +91,26 @@ public:
 
         DataManager dm("../dataset/test/");
 
-        FlightGraph g1 = dm.createFlightGraph();
         vector<string> actual;
         vector<string> expected;
 
         cout << "  Listing connected components test 1:";
-        actual = g1.reachableAirports("0D");
+        actual = dm.getFlightsGraph()->reachableAirports("0D");
         expected = {"0D", "0G", "0E", "0C", "0F"};
         cout << "\n   : " << (listUnsortedEquals(actual, expected) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Listing connected components test 2:";
-        actual = g1.reachableAirports("1A");
+        actual = dm.getFlightsGraph()->reachableAirports("1A");
         expected = {"1A", "1B", "1D"};
         cout << "\n   : " << (listUnsortedEquals(actual, expected) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Listing connected components test 3:";
-        actual = g1.reachableAirports("2A");
+        actual = dm.getFlightsGraph()->reachableAirports("2A");
         expected = {"2A", "2B"};
         cout << "\n   : " << (listUnsortedEquals(actual, expected) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Listing connected components test 4:";
-        actual = g1.reachableAirports("0B");
+        actual = dm.getFlightsGraph()->reachableAirports("0B");
         expected = {"0B"};
         cout << "\n   : " << (listUnsortedEquals(actual, expected) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
@@ -123,72 +121,49 @@ public:
         cout << "MinDistanceBetweenAirportsTests:\n"
                 "________________________________\n";
 
+        cout << "TESTS WITH FAKE DATA\n"
+                "____________________\n\n";
+
         DataManager dmTest("../dataset/test/");
 
-        FlightGraph g1 = dmTest.createFlightGraph();
-
         cout << "  Min distance test 1:";
-        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistance("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistanceCodeCode("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Min distance test 2:";
-        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistance("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistanceCodeCode("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Min distance test 3:";
-        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistance("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistanceCodeCode("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Min distance test 4:";
-        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistance("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "\n   : " << (approximates(dmTest.getFlightsGraph()->minDistanceCodeCode("0A", "0E", false), 279, 30) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Min distance test 5:";
-        cout << "\n   : " << (equals(dmTest.getFlightsGraph()->minDistance("1A", "1D", true), 1) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "\n   : " << (equals(dmTest.getFlightsGraph()->minDistanceCodeCode("1A", "1D", true), 1) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Min distance test 6:";
-        cout << "\n   : " << (equals(dmTest.getFlightsGraph()->minDistance("1A", "1A", true), 0) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "\n   : " << (equals(dmTest.getFlightsGraph()->minDistanceCodeCode("1A", "1A", true), 0) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << "  Min distance test 7:";
-        cout << "\n   : " << (equals(dmTest.getFlightsGraph()->minDistance("1A", "1A", false), 0) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "\n   : " << (equals(dmTest.getFlightsGraph()->minDistanceCodeCode("1A", "1A", false), 0) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+
+        cout << '\n';
+
+        cout << "TESTS WITH REAL DATA\n"
+                "____________________\n\n";
 
         DataManager dmReal("../dataset/real/");
 
-        cout << "  Min distance test 8:";
-        cout << "\n   : " << (approximates(dmReal.getFlightsGraph()->minDistance("CIY", "CRL", false), 1740, 40) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "  Min distance test 1:";
+        cout << "\n   : " << (approximates(dmReal.getFlightsGraph()->minDistanceCodeCode("CIY", "CRL", false), 1740, 40) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
+        cout << "  Min distance test 2:";
+        auto test2 = dmReal.getFlightsGraph()->minDistanceCoordinateCoordinate({46.62588, -80.51849},{19.787141695223095,105.31429015741878},false, 30);
+        cout << "\n   : " << (equals(test2.first->getCode(),"YSB") && equals(test2.second->getCode(),"THD") ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
-
-        cout << '\n';
-    }
-
-    void MinMaxStackTests() {
-        cout << "MinMaxStackTests:\n"
-                "_____________\n";
-        Airport *a1 = new Airport("1", "A1", "", "", {0, 0});
-        Airport *a2 = new Airport("2", "A2", "", "", {0, 0});
-        Airport *a3 = new Airport("3", "A3", "", "", {0, 0});
-        Airport *a4 = new Airport("4", "A4", "", "", {0, 0});
-
-
-        MinMaxStack<Airport*,AirportCompare> mms;
-        a1->setDistance(12); mms.push(a1);
-        a2->setDistance(26); mms.push(a2);
-        cout << "  Get min test 1:\n";
-        cout << "   :  " << (equals(mms.getMin()->getDistance(), 12) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
-
-        cout << "  Get max test 1:\n";
-        cout << "   :  " << (equals(mms.getMax()->getDistance(), 26) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
-
-        a3->setDistance(999); mms.push(a3);
-        cout << "  Get min test 2:\n";
-        cout << "   :  " << (equals(mms.getMin()->getDistance(), 12) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
-
-        cout << "  Get max test 2:\n";
-        cout << "   :  " << (equals(mms.getMax()->getDistance(), 999) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
-
-        a4->setDistance(-13); mms.push(a4);
-        cout << "  Get min test 3:\n";
-        cout << "   :  " << (equals(mms.getMin()->getDistance(), -13) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
-
-        cout << "  Get max test 3:\n";
-        cout << "   :  " << (equals(mms.getMax()->getDistance(), 999) ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
+        cout << "  Min distance test 3:";
+        auto test3 = dmReal.getFlightsGraph()->minDistanceCoordinateCoordinate({51.75147740236968, 0.439787551256108},{-28.8028, 24.7652}, false, 30);
+        cout << "\n   : " << (equals(test3.first->getCode(),"STN") && equals(test3.second->getCode(),"KIM") ? "Success\t\t\t\t\t\t\t\t\t\t√" : "Failure\t\t\t\t\t\t\t\t\t\tX") << '\n';
 
         cout << '\n';
     }
@@ -199,7 +174,6 @@ public:
         CoordinatesTests();
         ReachableAirportsTests();
         MinDistanceBetweenAirportsTests();
-        // MinMaxStackTests(); // Struct compare esta com o return trocado
         cout << "\n_____________________________________________________\n";
         cout << "WRITE SOMETHING TO GO BACK"; string _; cin >> _;
     }

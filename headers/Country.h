@@ -12,6 +12,8 @@
 #include "Airline.h"
 #include "City.h"
 
+class City;
+
 class Country {
     std::string name;
     std::vector<Airport*> airports;

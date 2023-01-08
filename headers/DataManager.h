@@ -39,8 +39,6 @@ public:
     UMcountries getCountries() const;
     UMcities getCities() const;
     FlightGraph *getFlightsGraph() const;
-
-    FlightGraph createFlightGraph();
 };
 
 

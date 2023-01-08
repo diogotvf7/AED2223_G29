@@ -69,7 +69,7 @@ void DataManager::readAirports() {
 
 void DataManager::readFlights() {
 
-    fg = new FlightGraph(airports, airlines);
+    fg = new FlightGraph(airports, airlines, countries, cities);
 
     ifstream csv(path + "flights.csv");
     string line;
@@ -107,26 +107,3 @@ UMcities DataManager::getCities() const {
 FlightGraph *DataManager::getFlightsGraph() const {
     return fg;
 }
-
-FlightGraph DataManager::createFlightGraph() {
-
-    FlightGraph flightGraph = FlightGraph(airports, airlines);
-
-    ifstream csv(path + "flights.csv");
-    string line;
-    getline(csv, line, '\n'); // Ignore Header
-
-    while (getline(csv, line, '\n')) {
-
-        string source, target, airline;
-        stringstream tmp(line);
-
-        getline(tmp, source, ',');
-        getline(tmp, target, ',');
-        getline(tmp, airline);
-
-        flightGraph.addFlight(airports[source], airports[target], airlines[airline]);
-    }
-    return flightGraph;
-}
-
